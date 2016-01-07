@@ -75,7 +75,8 @@
 				cube2.position.x = -2;
 				cube2.position.z = -10;
 
-
+				window.addEventListener('resize', resize, false);
+				setTimeout(resize, 1);
 			}
 			
 			var fullscreen = function() {
@@ -94,11 +95,11 @@
 			}
 
 			var resize = function() {
-				camera.aspect = container.offsetWidth/container.offsetHeight;
+				camera.aspect = window.innerWidth/window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				//renderer.setSize(container.offsetWidth, container.offsetHeight);
-				//effect.setSize(container.offsetWidth, container.offsetHeight);
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				effect.setSize(window.innerWidth, window.innerHeight);
 			}
 
 			var update = function(dt) {
@@ -109,7 +110,7 @@
 				controls.update(dt);
 			}
 			
-			var render = function() {
+			var render = function(dt) {
 				cube.rotation.x += 0.01;
 				cube.rotation.y += 0.01;
 
