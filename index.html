@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="main.css"></link>
 </head>
 <body>
+<div id="container"></div>
 
 	<script type="text/javascript" src="./js/three.js"></script>
 	<script type="text/javascript" src="./js/StereoEffect.js"></script>
@@ -15,13 +16,16 @@
 			Detector.addGetWebGLMessage();
 		}
 		else {
+			var clock = new THREE.Clock();
+
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000);
 
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize(window.innerWidth, window.innerHeight);
-			document.body.appendChild(renderer.domElement);
+			var container = document.getElementById("container");
+			container.appendChild(renderer.domElement);
 
 			var effect = new THREE.StereoEffect(renderer);
 			effect.eyeSeparation = 10;
@@ -31,21 +35,61 @@
 			var material = new THREE.MeshBasicMaterial({color: 0x00ffaa});
 			var cube = new THREE.Mesh(geometry, material);
 			scene.add(cube);
+			cube.position.x = 2;
 
+			var cube2 = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: 0xeeffee}));
+			scene.add(cube2);
+			cube2.position.x = -2;
 
 			camera.position.z = 5;
 
-			var animate = function() {
-				requestAnimationFrame(animate);
-				render();
+			
+			var fullscreen = function() {
+				if(container.requestFullscreen) {
+					container.requestFullscreen();
+				}
+				else if(container.msRequestFullscreen) {
+					container.msRequestFullscreen();
+				}
+				else if (container.mozRequestFullScreen) {
+					container.mozRequestFullScreen();
+				}
+				else if(container.webkitRequestFullscreen) {
+					container.webkitRequestFullscreen();
+				}
 			}
 
-			var render = function() {
-				cube.rotation.x += 0.1;
-				cube.rotation.y += 0.1;
+			var resize = function() {
+				camera.aspect = container.offsetWidth/container.offsetHeight;
+				camera.updateProjectionMatrix();
 
-				
+				//renderer.setSize(container.offsetWidth, container.offsetHeight);
+				//effect.setSize(container.offsetWidth, container.offsetHeight);
+			}
+
+			var update = function(dt) {
+				resize();
+
+				camera.updateProjectionMatrix();
+
+				/*controls.update(dt); */
+			}
+			
+			var render = function() {
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+
+				cube2.rotation.x += 0.01;
+				cube2.rotation.y += 0.01;
+
 				effect.render(scene, camera);
+			}
+
+			var animate = function(t) {
+				requestAnimationFrame(animate);
+
+				update(clock.getDelta());	
+				render(clock.getDelta());
 			}
 
 			animate();
