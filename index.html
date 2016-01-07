@@ -19,7 +19,7 @@
 			var clock = new THREE.Clock();
 
 			var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000);
+			var camera = new THREE.PerspectiveCamera( 90, 1, 0.1, 1000);
 
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setPixelRatio( window.devicePixelRatio );
@@ -28,7 +28,7 @@
 			container.appendChild(renderer.domElement);
 
 			var effect = new THREE.StereoEffect(renderer);
-			effect.eyeSeparation = 10;
+			//effect.eyeSeparation = 10;
 			effect.setSize(window.innerWidth, window.innerHeight);
 
 			var geometry = new THREE.BoxGeometry(1,1,1);
@@ -41,7 +41,7 @@
 			scene.add(cube2);
 			cube2.position.x = -2;
 
-			camera.position.z = 5;
+			camera.position.z = 10;
 
 			
 			var fullscreen = function() {
