@@ -11,38 +11,58 @@
 	<script type="text/javascript" src="./js/three.js"></script>
 	<script type="text/javascript" src="./js/StereoEffect.js"></script>
 	<script type="text/javascript" src="./js/Detector.js"></script>
+	<script type="text/javascript" src="./js/DeviceOrientationControls.js"></script>
+	<script type="text/javascript" src="./js/OrbitControls.js"></script>
 	<script>
 		if( !Detector.webgl) {
 			Detector.addGetWebGLMessage();
 		}
 		else {
-			var clock = new THREE.Clock();
+			var clock, scene, camera, renderer, container;
+			var effect, controls;
+			var geometry, material, cube, cube2;
 
-			var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera( 90, 1, 0.1, 1000);
+			var create = function() {
+				clock = new THREE.Clock();
 
-			var renderer = new THREE.WebGLRenderer();
-			renderer.setPixelRatio( window.devicePixelRatio );
-			renderer.setSize(window.innerWidth, window.innerHeight);
-			var container = document.getElementById("container");
-			container.appendChild(renderer.domElement);
+				scene = new THREE.Scene();
+				camera = new THREE.PerspectiveCamera(90, 1, 0.1, 1000);
 
-			var effect = new THREE.StereoEffect(renderer);
-			//effect.eyeSeparation = 10;
-			effect.setSize(window.innerWidth, window.innerHeight);
+				renderer = new THREE.WebGLRenderer();
+				renderer.setClearColor(0xffffff, 1);
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				container = document.getElementById("container");
+				container.appendChild(renderer.domElement);
 
-			var geometry = new THREE.BoxGeometry(1,1,1);
-			var material = new THREE.MeshBasicMaterial({color: 0x00ffaa});
-			var cube = new THREE.Mesh(geometry, material);
-			scene.add(cube);
-			cube.position.x = 2;
+				effect = new THREE.StereoEffect(renderer);
+				//effect.eyeSeparation = 10;
+				effect.setSize(window.innerWidth, window.innerHeight);
 
-			var cube2 = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: 0xeeffee}));
-			scene.add(cube2);
-			cube2.position.x = -2;
+				controls =  new THREE.OrbitControls(camera, render.domElement);
+				controls.rotateUp(Math.PI/4);
+				controls.target.set(
+					camera.position.x + 0.1,
+					camera.position.y,
+					camera.position.z
+				);
+				controls.noZoom = true;
+				controls.noPan = true;
 
-			camera.position.z = 10;
+				geometry = new THREE.BoxGeometry(2,2,2);
+				material = new THREE.MeshBasicMaterial({color: 0x00ffaa});
+				cube = new THREE.Mesh(geometry, material);
+				scene.add(cube);
+				cube.position.x = 2;
+				cube.position.z = -10;
 
+				cube2 = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: 0x8888cc}));
+				scene.add(cube2);
+				cube2.position.x = -2;
+				cube2.position.z = -10;
+
+
+			}
 			
 			var fullscreen = function() {
 				if(container.requestFullscreen) {
@@ -72,7 +92,7 @@
 
 				camera.updateProjectionMatrix();
 
-				/*controls.update(dt); */
+				controls.update(dt);
 			}
 			
 			var render = function() {
@@ -92,6 +112,7 @@
 				render(clock.getDelta());
 			}
 
+			create();
 			animate();
 		}
 	</script>
