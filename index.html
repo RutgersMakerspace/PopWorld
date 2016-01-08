@@ -59,8 +59,10 @@
 					controls.update();
 
 					renderer.domElement.addEventListener('click', fullscreen, false);
+					//container.firstChild.addEventListener('click', fullscreen, false);
 					window.removeEventListener('deviceorientation', setOrientationControls, true);
 				}
+				//https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation
 				window.addEventListener('deviceorientation', setOrientationControls, true);
 
 				geometry = new THREE.BoxGeometry(2,2,2);
@@ -77,36 +79,31 @@
 
 				var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
 				var materialArray = [];
-				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("left.jpg"),
-					//render on inner side of cube
-					side: THREE.BackSide
-				}));
-				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("right.jpg"),
-					//render on inner side of cube
-					side: THREE.BackSide
-				}));
-				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("up.jpg"),
-					//render on inner side of cube
-					side: THREE.BackSide
-				}));
-				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("bottom.jpg"),
-					//render on inner side of cube
-					side: THREE.BackSide
-				}));
-				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("front.jpg"),
-					//render on inner side of cube
-					side: THREE.BackSide
-				}));
-				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("back.jpg"),
-					//render on inner side of cube
-					side: THREE.BackSide
-				}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("left.jpg"),
+						//render on inner side of cube
+						side: THREE.BackSide
+					}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("right.jpg"),
+						side: THREE.BackSide
+					}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("up.jpg"),
+						side: THREE.BackSide
+					}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("bottom.jpg"),
+						side: THREE.BackSide
+					}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("front.jpg"),
+						side: THREE.BackSide
+					}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("back.jpg"),
+						side: THREE.BackSide
+					}));
 				var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
 				var skyBox = new THREE.Mesh(skyGeo, skyMaterial);
 				scene.add(skyBox);
@@ -117,17 +114,19 @@
 			}
 			
 			var fullscreen = function() {
-				if(container.requestFullscreen) {
-					container.requestFullscreen();
+				//https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
+				console.log("Requested full screen");
+				if(renderer.domElement.requestFullscreen) {
+					renderer.domElement.requestFullscreen();
 				}
-				else if(container.msRequestFullscreen) {
-					container.msRequestFullscreen();
+				else if(renderer.domElement.msRequestFullscreen) {
+					renderer.domElement.msRequestFullscreen();
 				}
-				else if (container.mozRequestFullScreen) {
-					container.mozRequestFullScreen();
+				else if (renderer.domElement.mozRequestFullScreen) {
+					renderer.domElement.mozRequestFullScreen();
 				}
-				else if(container.webkitRequestFullscreen) {
-					container.webkitRequestFullscreen();
+				else if(renderer.domElement.webkitRequestFullscreen) {
+					renderer.domElement.webkitRequestFullscreen();
 				}
 			}
 
