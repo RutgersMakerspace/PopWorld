@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="./js/DeviceOrientationControls.js"></script>
 	<script type="text/javascript" src="./js/OrbitControls.js"></script>
 	<script>
-		if( !Detector.webgl) {
+		if(!Detector.webgl) {
 			Detector.addGetWebGLMessage();
 		}
 		else {
@@ -60,8 +60,7 @@
 					controls.connect();
 					controls.update();
 
-					fullscreen();
-					renderer.domElement.addEventListener('touchstart', fullscreen, false);
+					renderer.domElement.addEventListener('click', fullscreen, false);
 					//container.firstChild.addEventListener('click', fullscreen, false);
 					window.removeEventListener('deviceorientation', setOrientationControls, true);
 				}
