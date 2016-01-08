@@ -23,6 +23,11 @@
 			var effect, controls;
 			var geometry, material, cube, cube2;
 
+			var raycaster = new THREE.Raycaster();
+			var mouse = new THREE.Vector2();
+			mouse.x = 0;
+			mouse.y = 0;
+
 			var create = function() {
 				clock = new THREE.Clock();
 
@@ -78,6 +83,10 @@
 				scene.add(cube2);
 				cube2.position.x = -2;
 				cube2.position.z = -10;
+
+				projectGroup = [];
+				projectGroup.push(cube);
+				projectGroup.push(cube2);
 
 				var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
 				var materialArray = [];
@@ -173,6 +182,13 @@
 
 				cube2.rotation.x += 0.01;
 				cube2.rotation.y += 0.01;
+
+				raycaster.setFromCamera( mouse, camera);
+
+				var intersects = raycaster.intersectObjects(projectGroup);
+				for(var i = 0; i < intersects.length; i++) {
+					intersects[i].object.material.color.set(0xffaaff);
+				}
 
 				effect.render(scene, camera);
 			}
