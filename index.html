@@ -26,7 +26,7 @@
 				clock = new THREE.Clock();
 
 				scene = new THREE.Scene();
-				camera = new THREE.PerspectiveCamera(90, 1, 0.1, 1500);
+				camera = new THREE.PerspectiveCamera(90, 1, 0.1, 15000);
 
 				renderer = new THREE.WebGLRenderer();
 				renderer.setClearColor(0xffffff, 1);
@@ -75,7 +75,7 @@
 				cube2.position.x = -2;
 				cube2.position.z = -10;
 
-				var skyGeo = new THREE.BoxGeometry(1000,1000,1000);
+				var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
 				var materialArray = [];
 				materialArray.push( new THREE.MeshBasicMaterial({ 
 					map: THREE.ImageUtils.loadTexture("left.jpg"),
