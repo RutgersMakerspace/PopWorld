@@ -72,7 +72,7 @@
 				cube = new THREE.Mesh(geometry, material);
 				scene.add(cube);
 				cube.position.x = 2;
-				cube.position.z = -10;
+				cube.position.z = -15;
 
 				cube2 = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: 0x8888cc}));
 				scene.add(cube2);
@@ -114,6 +114,24 @@
 				window.addEventListener('resize', resize, false);
 				setTimeout(resize, 1);
 			}
+
+			var escapeFullScreen = function() {
+				if(render.domElement.exitFullscreen) {
+					renderer.domElement.exitFullscreen();
+				}
+				else if(renderer.domElement.mozCancelFullScreen){
+					renderer.domElement.mozCancelFullScreen();
+				}
+				else if(renderer.domElement.msExitFullscreen) {
+					renderer.domElement.msExitFullscreen();
+				}
+				else if(renderer.domElement.webkitExitFullscreen) {
+					renderer.domElement.webkitExitFullscreen();
+				}
+				
+				renderer.domElement.removeEventListener('click', escapeFullScreen, false);
+				renderer.domElement.addEventListener('click', fullscreen, false);
+			}
 			
 			var fullscreen = function() {
 				//https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
@@ -130,11 +148,7 @@
 					renderer.domElement.webkitRequestFullscreen();
 				}
 				renderer.domElement.removeEventListener('click', fullscreen, false);
-				renderer.domElement.addEventListener('click', selection, false);
-			}
-
-			var selection = function() {
-				alert("Success");
+				renderer.domElement.addEventListener('click', escapeFullScreen, false);
 			}
 
 			var resize = function() {
