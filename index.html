@@ -129,6 +129,12 @@
 				else if(renderer.domElement.webkitRequestFullscreen) {
 					renderer.domElement.webkitRequestFullscreen();
 				}
+				renderer.domElement.removeEventListener('click', fullscreen, false);
+				renderer.domElement.addEventListener('click', selection, false);
+			}
+
+			var selection = function() {
+				alert("Success");
 			}
 
 			var resize = function() {
