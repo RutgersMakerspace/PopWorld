@@ -54,11 +54,13 @@
 					if(!e.alpha) {
 						return;
 					}
+					console.log("rotated");
 
 					controls = new THREE.DeviceOrientationControls(camera, true);
 					controls.connect();
 					controls.update();
 
+					fullscreen();
 					renderer.domElement.addEventListener('touchstart', fullscreen, false);
 					//container.firstChild.addEventListener('click', fullscreen, false);
 					window.removeEventListener('deviceorientation', setOrientationControls, true);
