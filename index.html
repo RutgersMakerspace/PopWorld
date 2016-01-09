@@ -72,6 +72,56 @@
 				//https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation
 				window.addEventListener('deviceorientation', setOrientationControls, true);
 
+				var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
+				var materialArray = [];
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/left.jpg"),
+						//render on inner side of cube
+						side: THREE.BackSide
+					}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/right.jpg"),
+						side: THREE.BackSide
+					}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/up.jpg"),
+						side: THREE.BackSide
+					}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/bottom.jpg"),
+						side: THREE.BackSide
+					}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/front.jpg"),
+						side: THREE.BackSide
+					}));
+					materialArray.push( new THREE.MeshBasicMaterial({ 
+						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/back.jpg"),
+						side: THREE.BackSide
+					}));
+				var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
+				var skyBox = new THREE.Mesh(skyGeo, skyMaterial);
+				scene.add(skyBox);
+
+				var loader =  new THREE.JSONLoader();
+				loader.load("./3D/Rutgers.json", function(geometry, materials) {
+					var material = new THREE.MeshLambertMaterial({color: 0xcf0a2c});
+					var obj = new THREE.Mesh(geometry, material);
+					obj.position.x = 2;
+					obj.position.z = -10;
+					obj.rotateX(90);
+					scene.add(obj);
+				});
+
+				loader.load("./3D/250.json", function(geometry, materials) {
+					var material = new THREE.MeshLambertMaterial({color: 0x989999});
+					var obj = new THREE.Mesh(geometry, material);
+					obj.position.x = 2;
+					obj.position.z = -10;
+					obj.rotateX(90);
+					scene.add(obj);
+				});
+
 				geometry = new THREE.BoxGeometry(2,2,2);
 				material = new THREE.MeshBasicMaterial({color: 0x00ffaa});
 				cube = new THREE.Mesh(geometry, material);
@@ -87,37 +137,6 @@
 				projectGroup = [];
 				projectGroup.push(cube);
 				projectGroup.push(cube2);
-
-				var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
-				var materialArray = [];
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("left.jpg"),
-						//render on inner side of cube
-						side: THREE.BackSide
-					}));
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("right.jpg"),
-						side: THREE.BackSide
-					}));
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("up.jpg"),
-						side: THREE.BackSide
-					}));
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("bottom.jpg"),
-						side: THREE.BackSide
-					}));
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("front.jpg"),
-						side: THREE.BackSide
-					}));
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("back.jpg"),
-						side: THREE.BackSide
-					}));
-				var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
-				var skyBox = new THREE.Mesh(skyGeo, skyMaterial);
-				scene.add(skyBox);
 
 
 				window.addEventListener('resize', resize, false);
