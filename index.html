@@ -106,45 +106,35 @@
 				//Setting up the lighting for Lambert and Phong Materials
 				var ambientLight = new THREE.AmbientLight(0xdddddd);
 				scene.add(ambientLight);
+			
+				//ray cast group
+				projectGroup = [];
 
 				//Loading our Rutgers 250 Logo
 				var loader =  new THREE.JSONLoader();
 				loader.load("./3D/Rutgers.json", function(geometry, materials) {
 					var material = new THREE.MeshLambertMaterial({color: 0xcf0a2c});
 					var obj = new THREE.Mesh(geometry, material);
-					obj.position.y = 3;
+					obj.position.y = 5;
 					obj.position.z = -20;
 					obj.rotateX(90);
 					obj.scale.set(3,3,3);
+
 					scene.add(obj);
+					projectGroup.push(obj);
 				});
 
 				loader.load("./3D/250.json", function(geometry, materials) {
 					var material = new THREE.MeshLambertMaterial({color: 0x989999});
 					var obj = new THREE.Mesh(geometry, material);
-					obj.position.y = 3;
+					obj.position.y = 5;
 					obj.position.z = -20;
 					obj.rotateX(90);
 					obj.scale.set(3,3,3);
+
 					scene.add(obj);
+					projectGroup.push(obj);
 				});
-
-				geometry = new THREE.BoxGeometry(2,2,2);
-				material = new THREE.MeshBasicMaterial({color: 0x00ffaa});
-				cube = new THREE.Mesh(geometry, material);
-				scene.add(cube);
-				cube.position.x = 8;
-				cube.position.z = -15;
-
-				cube2 = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: 0x8888cc}));
-				scene.add(cube2);
-				cube2.position.x = -8;
-				cube2.position.z = -10;
-
-				projectGroup = [];
-				projectGroup.push(cube);
-				projectGroup.push(cube2);
-
 
 				window.addEventListener('resize', resize, false);
 				setTimeout(resize, 1);
@@ -203,13 +193,10 @@
 			}
 			
 			var render = function(dt) {
-				cube.rotation.x += 0.01;
-				cube.rotation.y += 0.01;
-
-				cube2.rotation.x += 0.01;
-				cube2.rotation.y += 0.01;
 
 				raycaster.setFromCamera( mouse, camera);
+
+				console.log(camera.rotation);
 
 				var intersects = raycaster.intersectObjects(projectGroup);
 				for(var i = 0; i < intersects.length; i++) {
