@@ -7,245 +7,248 @@
 	<link rel="stylesheet" type="text/css" href="main.css"></link>
 </head>
 <body>
-<div id="hud">
-	<div class="cursor"></div>
-	<div class="cursor"></div>
+<div id="repository">
+	<div id="hud">
+		<div class="cursor"></div>
+		<div class="cursor"></div>
+	</div>
+	<div id="container"></div>
 </div>
-<div id="container"></div>
 
-	<script type="text/javascript" src="./js/three.js"></script>
-	<script type="text/javascript" src="./js/StereoEffect.js"></script>
-	<script type="text/javascript" src="./js/Detector.js"></script>
-	<script type="text/javascript" src="./js/DeviceOrientationControls.js"></script>
-	<script type="text/javascript" src="./js/OrbitControls.js"></script>
-	<script>
-		if(!Detector.webgl) {
-			Detector.addGetWebGLMessage();
+<script type="text/javascript" src="./js/three.js"></script>
+<script type="text/javascript" src="./js/StereoEffect.js"></script>
+<script type="text/javascript" src="./js/Detector.js"></script>
+<script type="text/javascript" src="./js/DeviceOrientationControls.js"></script>
+<script type="text/javascript" src="./js/OrbitControls.js"></script>
+<script>
+	if(!Detector.webgl) {
+		Detector.addGetWebGLMessage();
+	}
+	else {
+		var clock, scene, camera, renderer, container;
+		var effect, controls;
+		var geometry, material, cube, cube2;
+
+
+		//Rutgers logo meshes
+		var rutgers, two50;
+		
+		var repository = document.getElementById("repository");
+		var hud = document.getElementById("hud");
+		var cursors = document.getElementsByClassName('cursor');
+		for(var i = 0; i < cursors.length; i++) {
+			cursors[i].style.width = window.innerWidth/32 + "px";
+			cursors[i].style.height = window.innerWidth/32 + "px";
 		}
-		else {
-			var clock, scene, camera, renderer, container;
-			var effect, controls;
-			var geometry, material, cube, cube2;
 
+		var raycaster = new THREE.Raycaster();
+		var mouse = new THREE.Vector2();
+		mouse.x = 0;
+		mouse.y = 0;
 
-			//Rutgers logo meshes
-			var rutgers, two50;
-			
-			var hud = document.getElementById("hud");
-			var cursors = document.getElementsByClassName('cursor');
-			for(var i = 0; i < cursors.length; i++) {
-				cursors[i].style.width = window.innerWidth/32 + "px";
-				cursors[i].style.height = window.innerWidth/32 + "px";
+		var create = function() {
+			clock = new THREE.Clock();
+
+			scene = new THREE.Scene();
+			camera = new THREE.PerspectiveCamera(90, 1, 0.1, 15000);
+
+			renderer = new THREE.WebGLRenderer();
+			renderer.setClearColor(0xffffff, 1);
+			renderer.setPixelRatio( window.devicePixelRatio );
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			container = document.getElementById("container");
+			container.appendChild(renderer.domElement);
+
+			effect = new THREE.StereoEffect(renderer);
+			//effect.eyeSeparation = 10;
+			effect.setSize(window.innerWidth, window.innerHeight);
+
+			controls =  new THREE.OrbitControls(camera, render.domElement);
+			controls.rotateUp(Math.PI/4);
+			controls.target.set(
+				camera.position.x + 0.1,
+				camera.position.y,
+				camera.position.z
+			);
+			controls.noZoom = true;
+			controls.noPan = true;
+
+			var setOrientationControls = function(e) {
+				if(!e.alpha) {
+					return;
+				}
+
+				controls = new THREE.DeviceOrientationControls(camera, true);
+				controls.connect();
+				controls.update();
+
+				repository.addEventListener('click', fullscreen, false);
+				//container.firstChild.addEventListener('click', fullscreen, false);
+				window.removeEventListener('deviceorientation', setOrientationControls, true);
 			}
+			//https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation
+			window.addEventListener('deviceorientation', setOrientationControls, true);
 
-			var raycaster = new THREE.Raycaster();
-			var mouse = new THREE.Vector2();
-			mouse.x = 0;
-			mouse.y = 0;
+			//Creating bounding sky box
+			var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
+			var materialArray = [];
+				materialArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/left.jpg"),
+					//render on inner side of cube
+					side: THREE.BackSide
+				}));
+				materialArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/right.jpg"),
+					side: THREE.BackSide
+				}));
+				materialArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/up.jpg"),
+					side: THREE.BackSide
+				}));
+				materialArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/bottom.jpg"),
+					side: THREE.BackSide
+				}));
+				materialArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/front.jpg"),
+					side: THREE.BackSide
+				}));
+				materialArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/back.jpg"),
+					side: THREE.BackSide
+				}));
+			var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
+			var skyBox = new THREE.Mesh(skyGeo, skyMaterial);
+			scene.add(skyBox);
 
-			var create = function() {
-				clock = new THREE.Clock();
+			//Setting up the lighting for Lambert and Phong Materials
+			var ambientLight = new THREE.AmbientLight(0xdddddd);
+			scene.add(ambientLight);
+		
+			//ray cast group
+			projectGroup = [];
 
-				scene = new THREE.Scene();
-				camera = new THREE.PerspectiveCamera(90, 1, 0.1, 15000);
+			//Loading our Rutgers 250 Logo
+			var loader =  new THREE.JSONLoader();
+			loader.load("./3D/Rutgers.json", function(geometry, materials) {
+				var material = new THREE.MeshLambertMaterial({color: 0xcf0a2c});
+				var rutgers = new THREE.Mesh(geometry, material);
+				rutgers.position.y = 5;
+				rutgers.position.x = 20;
+				rutgers.rotation.z = Math.PI/2;
+				rutgers.rotation.x = Math.PI/2;
+				rutgers.scale.set(3,3,3);
 
-				renderer = new THREE.WebGLRenderer();
-				renderer.setClearColor(0xffffff, 1);
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize(window.innerWidth, window.innerHeight);
-				container = document.getElementById("container");
-				container.appendChild(renderer.domElement);
+				scene.add(rutgers);
+				projectGroup.push(rutgers);
+			});
 
-				effect = new THREE.StereoEffect(renderer);
-				//effect.eyeSeparation = 10;
-				effect.setSize(window.innerWidth, window.innerHeight);
+			loader.load("./3D/250.json", function(geometry, materials) {
+				var material = new THREE.MeshLambertMaterial({color: 0x989999});
+				var two50 = new THREE.Mesh(geometry, material);
+				two50.position.y = 5;
+				two50.position.x = 20;
+				two50.rotation.z = Math.PI/2;
+				two50.rotation.x = Math.PI/2;
+				two50.scale.set(3,3,3);
 
-				controls =  new THREE.OrbitControls(camera, render.domElement);
-				controls.rotateUp(Math.PI/4);
-				controls.target.set(
-					camera.position.x + 0.1,
-					camera.position.y,
-					camera.position.z
-				);
-				controls.noZoom = true;
-				controls.noPan = true;
+				scene.add(two50);
+				projectGroup.push(two50);
+			});
 
-				var setOrientationControls = function(e) {
-					if(!e.alpha) {
-						return;
-					}
-
-					controls = new THREE.DeviceOrientationControls(camera, true);
-					controls.connect();
-					controls.update();
-
-					window.addEventListener('click', fullscreen, false);
-					//container.firstChild.addEventListener('click', fullscreen, false);
-					window.removeEventListener('deviceorientation', setOrientationControls, true);
-				}
-				//https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation
-				window.addEventListener('deviceorientation', setOrientationControls, true);
-
-				//Creating bounding sky box
-				var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
-				var materialArray = [];
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/left.jpg"),
-						//render on inner side of cube
-						side: THREE.BackSide
-					}));
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/right.jpg"),
-						side: THREE.BackSide
-					}));
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/up.jpg"),
-						side: THREE.BackSide
-					}));
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/bottom.jpg"),
-						side: THREE.BackSide
-					}));
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/front.jpg"),
-						side: THREE.BackSide
-					}));
-					materialArray.push( new THREE.MeshBasicMaterial({ 
-						map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/back.jpg"),
-						side: THREE.BackSide
-					}));
-				var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
-				var skyBox = new THREE.Mesh(skyGeo, skyMaterial);
-				scene.add(skyBox);
-
-				//Setting up the lighting for Lambert and Phong Materials
-				var ambientLight = new THREE.AmbientLight(0xdddddd);
-				scene.add(ambientLight);
-			
-				//ray cast group
-				projectGroup = [];
-
-				//Loading our Rutgers 250 Logo
-				var loader =  new THREE.JSONLoader();
-				loader.load("./3D/Rutgers.json", function(geometry, materials) {
-					var material = new THREE.MeshLambertMaterial({color: 0xcf0a2c});
-					var rutgers = new THREE.Mesh(geometry, material);
-					rutgers.position.y = 5;
-					rutgers.position.x = 20;
-					rutgers.rotation.z = Math.PI/2;
-					rutgers.rotation.x = Math.PI/2;
-					rutgers.scale.set(3,3,3);
-
-					scene.add(rutgers);
-					projectGroup.push(rutgers);
-				});
-
-				loader.load("./3D/250.json", function(geometry, materials) {
-					var material = new THREE.MeshLambertMaterial({color: 0x989999});
-					var two50 = new THREE.Mesh(geometry, material);
-					two50.position.y = 5;
-					two50.position.x = 20;
-					two50.rotation.z = Math.PI/2;
-					two50.rotation.x = Math.PI/2;
-					two50.scale.set(3,3,3);
-
-					scene.add(two50);
-					projectGroup.push(two50);
-				});
-
-				window.addEventListener('resize', resize, false);
-				setTimeout(resize, 1);
-			}
-
-			var escapeFullScreen = function() {
-				if(render.domElement.exitFullscreen) {
-					renderer.domElement.exitFullscreen();
-				}
-				else if(renderer.domElement.mozCancelFullScreen){
-					renderer.domElement.mozCancelFullScreen();
-				}
-				else if(renderer.domElement.msExitFullscreen) {
-					renderer.domElement.msExitFullscreen();
-				}
-				else if(renderer.domElement.webkitExitFullscreen) {
-					renderer.domElement.webkitExitFullscreen();
-				}
-				
-				renderer.domElement.removeEventListener('click', escapeFullScreen, false);
-				renderer.domElement.addEventListener('click', fullscreen, false);
-			}
-			
-			var fullscreen = function() {
-				//https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
-				if(window.requestFullscreen) {
-					window.requestFullscreen();
-				}
-				else if(window.msRequestFullscreen) {
-					window.msRequestFullscreen();
-				}
-				else if (window.mozRequestFullScreen) {
-					window.mozRequestFullScreen();
-				}
-				else if(window.webkitRequestFullscreen) {
-					window.webkitRequestFullscreen();
-				}
-				//renderer.domElement.removeEventListener('click', fullscreen, false);
-				//renderer.domElement.addEventListener('click', escapeFullScreen, false);
-			}
-
-			var resize = function() {
-				camera.aspect = window.innerWidth/window.innerHeight;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize(window.innerWidth, window.innerHeight);
-				effect.setSize(window.innerWidth, window.innerHeight);
-			}
-
-			var update = function(dt) {
-				resize();
-
-				camera.updateProjectionMatrix();
-
-				controls.update(dt);
-			}
-			
-			var render = function(dt) {
-
-				raycaster.setFromCamera( mouse, camera);
-				
-				//console.log(camera.position);
-
-				var intersects = raycaster.intersectObjects(projectGroup);
-				for(var i = 0; i < intersects.length; i++) {
-					//intersects[i].object.material.color.set(0xffaaff);
-				}
-				if(intersects.length > 0) {
-					for(var i = 0; i < cursors.length; i++) {
-						var cursorWidth = cursors[i].offsetWidth;
-						cursors[i].style.width = (cursorWidth - 9) + "px";
-						cursors[i].style.height = (cursorWidth - 9) + "px";
-					}
-				}
-				else {
-					for(var i = 0; i < cursors.length; i++) {
-						cursors[i].style.width = window.innerWidth/32 + "px";
-						cursors[i].style.height = window.innerWidth/32 + "px";
-					}
-				}
-
-				effect.render(scene, camera);
-			}
-
-			var animate = function(t) {
-				requestAnimationFrame(animate);
-
-				update(clock.getDelta());	
-				render(clock.getDelta());
-			}
-
-			create();
-			animate();
+			window.addEventListener('resize', resize, false);
+			setTimeout(resize, 1);
 		}
-	</script>
+
+		var escapeFullScreen = function() {
+			if(render.domElement.exitFullscreen) {
+				renderer.domElement.exitFullscreen();
+			}
+			else if(renderer.domElement.mozCancelFullScreen){
+				renderer.domElement.mozCancelFullScreen();
+			}
+			else if(renderer.domElement.msExitFullscreen) {
+				renderer.domElement.msExitFullscreen();
+			}
+			else if(renderer.domElement.webkitExitFullscreen) {
+				renderer.domElement.webkitExitFullscreen();
+			}
+			
+			renderer.domElement.removeEventListener('click', escapeFullScreen, false);
+			renderer.domElement.addEventListener('click', fullscreen, false);
+		}
+		
+		var fullscreen = function() {
+			//https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
+			if(repository.requestFullscreen) {
+				repository.requestFullscreen();
+			}
+			else if(repository.msRequestFullscreen) {
+				repository.msRequestFullscreen();
+			}
+			else if (repository.mozRequestFullScreen) {
+				repository.mozRequestFullScreen();
+			}
+			else if(repository.webkitRequestFullscreen) {
+				repository.webkitRequestFullscreen();
+			}
+			//renderer.domElement.removeEventListener('click', fullscreen, false);
+			//renderer.domElement.addEventListener('click', escapeFullScreen, false);
+		}
+
+		var resize = function() {
+			camera.aspect = window.innerWidth/window.innerHeight;
+			camera.updateProjectionMatrix();
+
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			effect.setSize(window.innerWidth, window.innerHeight);
+		}
+
+		var update = function(dt) {
+			resize();
+
+			camera.updateProjectionMatrix();
+
+			controls.update(dt);
+		}
+		
+		var render = function(dt) {
+
+			raycaster.setFromCamera( mouse, camera);
+			
+			//console.log(camera.position);
+
+			var intersects = raycaster.intersectObjects(projectGroup);
+			for(var i = 0; i < intersects.length; i++) {
+				//intersects[i].object.material.color.set(0xffaaff);
+			}
+			if(intersects.length > 0) {
+				for(var i = 0; i < cursors.length; i++) {
+					var cursorWidth = cursors[i].offsetWidth;
+					cursors[i].style.width = (cursorWidth - 9) + "px";
+					cursors[i].style.height = (cursorWidth - 9) + "px";
+				}
+			}
+			else {
+				for(var i = 0; i < cursors.length; i++) {
+					cursors[i].style.width = window.innerWidth/32 + "px";
+					cursors[i].style.height = window.innerWidth/32 + "px";
+				}
+			}
+
+			effect.render(scene, camera);
+		}
+
+		var animate = function(t) {
+			requestAnimationFrame(animate);
+
+			update(clock.getDelta());	
+			render(clock.getDelta());
+		}
+
+		create();
+		animate();
+	}
+</script>
 </body>
 </html>
