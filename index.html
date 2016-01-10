@@ -36,8 +36,7 @@
 		var repository = document.getElementById("repository");
 		var hud = document.getElementById("hud");
 		var cursors = document.getElementsByClassName('cursor');
-		for(var i = 0; i < cursors.length; i++) {
-			cursors[i].style.width = window.innerWidth/32 + "px";
+		for(var i = 0; i < cursors.length; i++) { cursors[i].style.width = window.innerWidth/32 + "px";
 			cursors[i].style.height = window.innerWidth/32 + "px";
 		}
 
@@ -156,6 +155,26 @@
 				projectGroup.push(two50);
 			});
 
+			//loading our planes 
+			var projects = {};
+			projects.first = new THREE.Mesh(new THREE.PlaneGeometry(4,4), new THREE.MeshBasicMaterial({color: 0xaaffaa}));
+			projects.first.position.set(0,2,-10);
+			scene.add(projects.first);
+			projectGroup.push(projects.first);
+
+			projects.second = new THREE.Mesh(new THREE.PlaneGeometry(4,4), new THREE.MeshBasicMaterial({color: 0xffaaaa}));
+			projects.second.position.set(0,2,10);
+			projects.second.rotation.y = Math.PI;
+			scene.add(projects.second);
+			projectGroup.push(projects.second);
+
+
+			projects.third = new THREE.Mesh(new THREE.PlaneGeometry(4,4), new THREE.MeshBasicMaterial({color: 0xaaaaff}));
+			projects.third.position.set(-10,2,0);
+			projects.third.rotation.y = Math.PI/2;
+			scene.add(projects.third);
+			projectGroup.push(projects.third);
+
 			window.addEventListener('resize', resize, false);
 			setTimeout(resize, 1);
 		}
@@ -219,14 +238,12 @@
 			//console.log(camera.position);
 
 			var intersects = raycaster.intersectObjects(projectGroup);
-			for(var i = 0; i < intersects.length; i++) {
-				//intersects[i].object.material.color.set(0xffaaff);
-			}
 			if(intersects.length > 0) {
 				for(var i = 0; i < cursors.length; i++) {
 					var cursorWidth = cursors[i].offsetWidth;
 					cursors[i].style.width = (cursorWidth - 9) + "px";
 					cursors[i].style.height = (cursorWidth - 9) + "px";
+					console.log(cursors[i].offsetWidth);
 				}
 			}
 			else {
