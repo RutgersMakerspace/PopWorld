@@ -7,6 +7,10 @@
 	<link rel="stylesheet" type="text/css" href="main.css"></link>
 </head>
 <body>
+<div id="hud">
+	<div class="cursor"></div>
+	<div class="cursor"></div>
+</div>
 <div id="container"></div>
 
 	<script type="text/javascript" src="./js/three.js"></script>
@@ -22,6 +26,16 @@
 			var clock, scene, camera, renderer, container;
 			var effect, controls;
 			var geometry, material, cube, cube2;
+
+
+			//Rutgers logo meshes
+			var rutgers, two50;
+
+			var cursors = document.getElementsByClassName('cursor');
+			for(var i = 0; i < cursors.length; i++) {
+				cursors[i].style.width = window.innerWidth/32 + "px";
+				cursors[i].style.height = window.innerWidth/32 + "px";
+			}
 
 			var raycaster = new THREE.Raycaster();
 			var mouse = new THREE.Vector2();
@@ -114,26 +128,28 @@
 				var loader =  new THREE.JSONLoader();
 				loader.load("./3D/Rutgers.json", function(geometry, materials) {
 					var material = new THREE.MeshLambertMaterial({color: 0xcf0a2c});
-					var obj = new THREE.Mesh(geometry, material);
-					obj.position.y = 5;
-					obj.position.z = -20;
-					obj.rotateX(90);
-					obj.scale.set(3,3,3);
+					var rutgers = new THREE.Mesh(geometry, material);
+					rutgers.position.y = 5;
+					rutgers.position.x = 20;
+					rutgers.rotation.z = Math.PI/2;
+					rutgers.rotation.x = Math.PI/2;
+					rutgers.scale.set(3,3,3);
 
-					scene.add(obj);
-					//projectGroup.push(obj);
+					scene.add(rutgers);
+					projectGroup.push(rutgers);
 				});
 
 				loader.load("./3D/250.json", function(geometry, materials) {
 					var material = new THREE.MeshLambertMaterial({color: 0x989999});
-					var obj = new THREE.Mesh(geometry, material);
-					obj.position.y = 5;
-					obj.position.z = -20;
-					obj.rotateX(90);
-					obj.scale.set(3,3,3);
+					var two50 = new THREE.Mesh(geometry, material);
+					two50.position.y = 5;
+					two50.position.x = 20;
+					two50.rotation.z = Math.PI/2;
+					two50.rotation.x = Math.PI/2;
+					two50.scale.set(3,3,3);
 
-					scene.add(obj);
-					//projectGroup.push(obj);
+					scene.add(two50);
+					projectGroup.push(two50);
 				});
 
 				window.addEventListener('resize', resize, false);
@@ -195,12 +211,25 @@
 			var render = function(dt) {
 
 				raycaster.setFromCamera( mouse, camera);
-
-				console.log(camera.rotation);
+				
+				//console.log(camera.position);
 
 				var intersects = raycaster.intersectObjects(projectGroup);
 				for(var i = 0; i < intersects.length; i++) {
-					intersects[i].object.material.color.set(0xffaaff);
+					//intersects[i].object.material.color.set(0xffaaff);
+				}
+				if(intersects.length > 0) {
+					for(var i = 0; i < cursors.length; i++) {
+						var cursorWidth = cursors[i].offsetWidth;
+						cursors[i].style.width = (cursorWidth - 9) + "px";
+						cursors[i].style.height = (cursorWidth - 9) + "px";
+					}
+				}
+				else {
+					for(var i = 0; i < cursors.length; i++) {
+						cursors[i].style.width = window.innerWidth/32 + "px";
+						cursors[i].style.height = window.innerWidth/32 + "px";
+					}
 				}
 
 				effect.render(scene, camera);
