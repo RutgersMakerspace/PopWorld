@@ -30,7 +30,8 @@
 
 			//Rutgers logo meshes
 			var rutgers, two50;
-
+			
+			var hud = document.getElementById("hud");
 			var cursors = document.getElementsByClassName('cursor');
 			for(var i = 0; i < cursors.length; i++) {
 				cursors[i].style.width = window.innerWidth/32 + "px";
@@ -78,7 +79,7 @@
 					controls.connect();
 					controls.update();
 
-					renderer.domElement.addEventListener('click', fullscreen, false);
+					window.addEventListener('click', fullscreen, false);
 					//container.firstChild.addEventListener('click', fullscreen, false);
 					window.removeEventListener('deviceorientation', setOrientationControls, true);
 				}
