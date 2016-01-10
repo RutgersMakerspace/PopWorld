@@ -92,28 +92,28 @@
 			var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
 			var materialArray = [];
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/left.jpg"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-x.png"),
 					//render on inner side of cube
 					side: THREE.BackSide
 				}));
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/right.jpg"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.png"),
 					side: THREE.BackSide
 				}));
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/up.jpg"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-y.png"),
 					side: THREE.BackSide
 				}));
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/bottom.jpg"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-y.png"),
 					side: THREE.BackSide
 				}));
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/front.jpg"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-z.png"),
 					side: THREE.BackSide
 				}));
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/back.jpg"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-z.png"),
 					side: THREE.BackSide
 				}));
 			var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
@@ -133,44 +133,42 @@
 				var material = new THREE.MeshLambertMaterial({color: 0xcf0a2c});
 				var rutgers = new THREE.Mesh(geometry, material);
 				rutgers.position.y = 5;
-				rutgers.position.x = 20;
-				rutgers.rotation.z = Math.PI/2;
+				rutgers.position.z = -20;
 				rutgers.rotation.x = Math.PI/2;
 				rutgers.scale.set(3,3,3);
 
 				scene.add(rutgers);
-				projectGroup.push(rutgers);
 			});
 
 			loader.load("./3D/250.json", function(geometry, materials) {
 				var material = new THREE.MeshLambertMaterial({color: 0x989999});
 				var two50 = new THREE.Mesh(geometry, material);
 				two50.position.y = 5;
-				two50.position.x = 20;
-				two50.rotation.z = Math.PI/2;
+				two50.position.z = -20;
 				two50.rotation.x = Math.PI/2;
 				two50.scale.set(3,3,3);
 
 				scene.add(two50);
-				projectGroup.push(two50);
 			});
 
 			//loading our planes 
 			var projects = {};
-			projects.first = new THREE.Mesh(new THREE.PlaneGeometry(4,4), new THREE.MeshBasicMaterial({color: 0xaaffaa}));
-			projects.first.position.set(0,2,-10);
+			projects.first = new THREE.Mesh(new THREE.PlaneGeometry(6,6), new THREE.MeshBasicMaterial({color: 0xaaffaa}));
+			//projects.first.position.set(0,2,-10);
+			projects.first.position.set(20, 2,-1);
+			projects.first.rotation.y = -Math.PI/2;
 			scene.add(projects.first);
 			projectGroup.push(projects.first);
 
-			projects.second = new THREE.Mesh(new THREE.PlaneGeometry(4,4), new THREE.MeshBasicMaterial({color: 0xffaaaa}));
-			projects.second.position.set(0,2,10);
+			projects.second = new THREE.Mesh(new THREE.PlaneGeometry(6,6), new THREE.MeshBasicMaterial({color: 0xffaaaa}));
+			projects.second.position.set(0,2,20);
 			projects.second.rotation.y = Math.PI;
 			scene.add(projects.second);
 			projectGroup.push(projects.second);
 
 
-			projects.third = new THREE.Mesh(new THREE.PlaneGeometry(4,4), new THREE.MeshBasicMaterial({color: 0xaaaaff}));
-			projects.third.position.set(-10,2,0);
+			projects.third = new THREE.Mesh(new THREE.PlaneGeometry(6,6), new THREE.MeshBasicMaterial({color: 0xaaaaff}));
+			projects.third.position.set(-20,2,0);
 			projects.third.rotation.y = Math.PI/2;
 			scene.add(projects.third);
 			projectGroup.push(projects.third);
