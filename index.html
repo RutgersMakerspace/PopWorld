@@ -38,7 +38,7 @@
 		var cursors = document.getElementsByClassName('cursor');
 
 		var projects;
-		var bellBox, cloudBox, makerBox;
+		var bellBox, cloudBox, makerBox, oaxBox;
 
 		var raycaster = new THREE.Raycaster();
 		var mouse = new THREE.Vector2();
@@ -183,6 +183,36 @@
 			scene.add(makerBox);
 			makerBox.visible = false;
 
+			skyMat.oax = [];
+				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/neg-x.jpg"),
+					side: THREE.BackSide
+				}));
+				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/pos-x.jpg"),
+					side: THREE.BackSide
+				}));
+				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/pos-y.jpg"),
+					side: THREE.BackSide
+				}));
+				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/neg-y.jpg"),
+					side: THREE.BackSide
+				}));
+				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/neg-z.jpg"),
+					side: THREE.BackSide
+				}));
+				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/pos-z.jpg"),
+					side: THREE.BackSide
+				}));
+			var oaxMaterial = new THREE.MeshFaceMaterial(skyMat.oax);
+			oaxBox = new THREE.Mesh(skyGeo, oaxMaterial);
+			scene.add(oaxBox);
+			oaxBox.visible = false;
+
 			//Setting up the lighting for Lambert and Phong Materials
 			var ambientLight = new THREE.AmbientLight(0xdddddd);
 			scene.add(ambientLight);
@@ -235,8 +265,17 @@
 			scene.add(projects.second);
 			projectGroup.push(projects.second);
 			projects.second.name = "bell";
+			
+			projects.oaxTexture = THREE.ImageUtils.loadTexture("./img/Oaxaca/pos-x.jpg");
+			projects.oaxTexture.minFilter = THREE.LinearFilter;
+			projects.third = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.oaxTexture}));
+			projects.third.position.set(0,2,20);
+			projects.third.rotation.y = Math.PI;
+			scene.add(projects.third);
+			projectGroup.push(projects.third);
+			projects.third.name = "oaxaca";
 
-			projects.fourth = new THREE.Mesh(new THREE.PlaneGeometry(15,15), new THREE.MeshBasicMaterial({color: 0xaaaaff}));
+			projects.fourth = new THREE.Mesh(new THREE.PlaneGeometry(23,23), new THREE.MeshBasicMaterial({color: 0xaaaaff}));
 			projects.fourth.position.set(0,-20,0);
 			projects.fourth.rotation.x = -Math.PI/2;
 			scene.add(projects.fourth);
@@ -323,11 +362,12 @@
 					//make others invisible
 					cloudBox.visible = false;
 					bellBox.visible = false;
+					oaxBox.visible = false;
 
 					//toggle the links
 					projects.first.visible = false;
 					projects.second.visible = false;
-					//projects.third.visible = false;
+					projects.third.visible = false;
 
 					rutgers.visible = false;
 					two50.visible = false;
@@ -337,25 +377,43 @@
 					//make others invisible
 					cloudBox.visible = false;
 					makerBox.visible = false;
+					oaxBox.visible = false;
 				
 					//make links invisible
 					projects.first.visible = false;
 					projects.second.visible = false;
-					//projects.third.visible = false;
+					projects.third.visible = false;
 					
 					rutgers.visible = false;
 					two50.visible = false;
+				}
+				else if(intersects[0].object.name === "oaxaca") {
+					oaxBox.visible = true;
+					//make others invisible
+					cloudBox.visible = false;
+					makerBox.visible = false;
+					bellBox.visible = false;
+				
+					//make links invisible
+					projects.first.visible = false;
+					projects.second.visible = false;
+					projects.third.visible = false;
+					
+					rutgers.visible = false;
+					two50.visible = false;
+
 				}
 				else if(intersects[0].object.name === "floor") {
 					cloudBox.visible = true;
 					//make others invisible
 					makerBox.visible = false;
 					bellBox.visible = false;
+					oaxBox.visible = false;
 					
 					//make links visible	
 					projects.first.visible = true;
 					projects.second.visible = true;
-					//projects.third.visible = false;
+					projects.third.visible = true;
 
 					//make rutgers logo visible
 					rutgers.visible = true;
