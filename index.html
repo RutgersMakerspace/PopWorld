@@ -92,28 +92,28 @@
 			var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
 			var materialArray = [];
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-x.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-x.jpg"),
 					//render on inner side of cube
 					side: THREE.BackSide
 				}));
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/pos-x.jpg"),
 					side: THREE.BackSide
 				}));
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-y.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/pos-y.jpg"),
 					side: THREE.BackSide
 				}));
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-y.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-y.jpg"),
 					side: THREE.BackSide
 				}));
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-z.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-z.jpg"),
 					side: THREE.BackSide
 				}));
 				materialArray.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-z.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/pos-z.jpg"),
 					side: THREE.BackSide
 				}));
 			var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
@@ -153,21 +153,27 @@
 
 			//loading our planes 
 			var projects = {};
-			projects.first = new THREE.Mesh(new THREE.PlaneGeometry(6,6), new THREE.MeshBasicMaterial({color: 0xaaffaa}));
+			
+			projects.makerTexture = THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.png");
+			projects.makerTexture.minFilter = THREE.LinearFilter;
+			projects.first = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.makerTexture}));
 			//projects.first.position.set(0,2,-10);
 			projects.first.position.set(20, 2,-1);
 			projects.first.rotation.y = -Math.PI/2;
 			scene.add(projects.first);
 			projectGroup.push(projects.first);
 
-			projects.second = new THREE.Mesh(new THREE.PlaneGeometry(6,6), new THREE.MeshBasicMaterial({color: 0xffaaaa}));
+			projects.bellTexture = THREE.ImageUtils.loadTexture("./img/BellWorksSkyBox/neg-x.png");
+			projects.bellTexture.minFilter = THREE.LinearFilter;
+			projects.second = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.bellTexture}));
 			projects.second.position.set(0,2,20);
 			projects.second.rotation.y = Math.PI;
 			scene.add(projects.second);
 			projectGroup.push(projects.second);
 
-
-			projects.third = new THREE.Mesh(new THREE.PlaneGeometry(6,6), new THREE.MeshBasicMaterial({color: 0xaaaaff}));
+			projects.mainTexture = THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-x.jpg");
+			projects.mainTexture.minFilter = THREE.LinearFilter;
+			projects.third = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.mainTexture}));
 			projects.third.position.set(-20,2,0);
 			projects.third.rotation.y = Math.PI/2;
 			scene.add(projects.third);
@@ -175,24 +181,6 @@
 
 			window.addEventListener('resize', resize, false);
 			setTimeout(resize, 1);
-		}
-
-		var escapeFullScreen = function() {
-			if(render.domElement.exitFullscreen) {
-				renderer.domElement.exitFullscreen();
-			}
-			else if(renderer.domElement.mozCancelFullScreen){
-				renderer.domElement.mozCancelFullScreen();
-			}
-			else if(renderer.domElement.msExitFullscreen) {
-				renderer.domElement.msExitFullscreen();
-			}
-			else if(renderer.domElement.webkitExitFullscreen) {
-				renderer.domElement.webkitExitFullscreen();
-			}
-			
-			renderer.domElement.removeEventListener('click', escapeFullScreen, false);
-			renderer.domElement.addEventListener('click', fullscreen, false);
 		}
 		
 		var fullscreen = function() {
@@ -209,8 +197,6 @@
 			else if(repository.webkitRequestFullscreen) {
 				repository.webkitRequestFullscreen();
 			}
-			//renderer.domElement.removeEventListener('click', fullscreen, false);
-			//renderer.domElement.addEventListener('click', escapeFullScreen, false);
 		}
 
 		var resize = function() {
@@ -233,9 +219,8 @@
 
 			raycaster.setFromCamera( mouse, camera);
 			
-			//console.log(camera.position);
-
 			var intersects = raycaster.intersectObjects(projectGroup);
+			
 			if(intersects.length > 0) {
 				for(var i = 0; i < cursors.length; i++) {
 					var cursorWidth = cursors[i].offsetWidth;
@@ -243,8 +228,14 @@
 					cursors[i].style.height = (cursorWidth - 9) + "px";
 					console.log(cursors[i].offsetWidth);
 				}
+				intersects[0].object.scale.x = 1.25;
+				intersects[0].object.scale.y = 1.25;
 			}
 			else {
+				for(var i = 0; i < projectGroup.length; i++) {
+					projectGroup[i].scale.x = 1;
+					projectGroup[i].scale.y = 1;
+				}
 				for(var i = 0; i < cursors.length; i++) {
 					cursors[i].style.width = window.innerWidth/32 + "px";
 					cursors[i].style.height = window.innerWidth/32 + "px";
