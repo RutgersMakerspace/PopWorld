@@ -163,7 +163,7 @@
 			scene.add(projects.first);
 			projectGroup.push(projects.first);
 
-			projects.bellTexture = THREE.ImageUtils.loadTexture("./img/BellWorksSkyBox/neg-x.png");
+			projects.bellTexture = THREE.ImageUtils.loadTexture("./img/BellWorks/neg-x.png");
 			projects.bellTexture.minFilter = THREE.LinearFilter;
 			projects.second = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.bellTexture}));
 			projects.second.position.set(0,2,20);
