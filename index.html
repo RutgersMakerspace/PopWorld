@@ -125,27 +125,27 @@
 
 			skyMat.bell = [];
 				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-x.png"),
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-x.jpg"),
 					side: THREE.BackSide
 				}));
 				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-x.png"),
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-x.jpg"),
 					side: THREE.BackSide
 				}));
 				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-y.png"),
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-y.jpg"),
 					side: THREE.BackSide
 				}));
 				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-y.png"),
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-y.jpg"),
 					side: THREE.BackSide
 				}));
 				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-z.png"),
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-z.jpg"),
 					side: THREE.BackSide
 				}));
 				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-z.png"),
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-z.jpg"),
 					side: THREE.BackSide
 				}));
 			var bellMaterial = new THREE.MeshFaceMaterial(skyMat.bell);
@@ -155,27 +155,27 @@
 
 			skyMat.maker = [];
 				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-x.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-x.jpg"),
 					side: THREE.BackSide
 				}));
 				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.jpg"),
 					side: THREE.BackSide
 				}));
 				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-y.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-y.jpg"),
 					side: THREE.BackSide
 				}));
 				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-y.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-y.jpg"),
 					side: THREE.BackSide
 				}));
 				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-z.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-z.jpg"),
 					side: THREE.BackSide
 				}));
 				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-z.png"),
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-z.jpg"),
 					side: THREE.BackSide
 				}));
 			var makerMaterial = new THREE.MeshFaceMaterial(skyMat.maker);
@@ -217,7 +217,7 @@
 			//loading our planes 
 			projects = {};
 			
-			projects.makerTexture = THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.png");
+			projects.makerTexture = THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.jpg");
 			projects.makerTexture.minFilter = THREE.LinearFilter;
 			projects.first = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.makerTexture}));
 			//projects.first.position.set(0,2,-10);
@@ -227,7 +227,7 @@
 			projectGroup.push(projects.first);
 			projects.first.name = "maker";
 
-			projects.bellTexture = THREE.ImageUtils.loadTexture("./img/BellWorks/neg-x.png");
+			projects.bellTexture = THREE.ImageUtils.loadTexture("./img/BellWorks/neg-x.jpg");
 			projects.bellTexture.minFilter = THREE.LinearFilter;
 			projects.second = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.bellTexture}));
 			projects.second.position.set(-20,2,0);
