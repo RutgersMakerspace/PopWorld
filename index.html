@@ -37,6 +37,7 @@
 		var hud = document.getElementById("hud");
 		var cursors = document.getElementsByClassName('cursor');
 
+		var projects;
 		var bellBox, cloudBox, makerBox;
 
 		var raycaster = new THREE.Raycaster();
@@ -214,7 +215,7 @@
 			});
 
 			//loading our planes 
-			var projects = {};
+			projects = {};
 			
 			projects.makerTexture = THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.png");
 			projects.makerTexture.minFilter = THREE.LinearFilter;
@@ -243,6 +244,7 @@
 			scene.add(projects.third);
 			projectGroup.push(projects.third);
 			projects.third.name = "main";
+			projects.third.visible = false;
 
 			window.addEventListener('resize', resize, false);
 			setTimeout(resize, 1);
@@ -287,44 +289,68 @@
 			var intersects = raycaster.intersectObjects(projectGroup);
 			
 			if(intersects.length > 0) {
-				for(var i = 0; i < cursors.length; i++) {
-					var cursorWidth = cursors[i].offsetWidth;
-					cursors[i].style.width = (cursorWidth - 9) + "px";
-					cursors[i].style.height = (cursorWidth - 9) + "px";
+				//if intersecting a visible object
+				if(intersects[0].object.visible === true) {
+					//shrink cursor
+					for(var i = 0; i < cursors.length; i++) {
+						var cursorWidth = cursors[i].offsetWidth;
+						cursors[i].style.width = (cursorWidth - 9) + "px";
+						cursors[i].style.height = (cursorWidth - 9) + "px";
+					}
+
+					//and increase the object scale
+					intersects[0].object.scale.x = 1.25;
+					intersects[0].object.scale.y = 1.25;
 				}
-				intersects[0].object.scale.x = 1.25;
-				intersects[0].object.scale.y = 1.25;
 			}
 			else {
+				//reset object scale
 				for(var i = 0; i < projectGroup.length; i++) {
 					projectGroup[i].scale.x = 1;
 					projectGroup[i].scale.y = 1;
 				}
+				//reset cursor size
 				for(var i = 0; i < cursors.length; i++) {
 					cursors[i].style.width = window.innerWidth/20 + "px";
 					cursors[i].style.height = window.innerWidth/20 + "px";
 				}
 			}
-			
+		
+			//if cursor is at smallest possible
 			if(cursors[0].style.width === "0px") {
-				//determine with what we intersected
+				//determine with what we intersected, make appropriate scene active
 				if(intersects[0].object.name === "maker") {
+					//toggle the sky boxes
 					makerBox.visible = true;
 					//make others invisible
 					cloudBox.visible = false;
 					bellBox.visible = false;
+
+					//toggle the links
+					projects.first.visible = false;
+					projects.second.visible = true;
+					projects.third.visible = true;
 				}
 				else if(intersects[0].object.name === "bell") {
 					bellBox.visible = true;
 					//make others invisible
 					cloudBox.visible = false;
 					makerBox.visible = false;
+					
+					projects.first.visible = true;
+					projects.second.visible = false;
+					projects.third.visible = true;
 				}
 				else if(intersects[0].object.name === "main") {
 					cloudBox.visible = true;
 					//make others invisible
 					makerBox.visible = false;
 					bellBox.visible = false;
+					
+					
+					projects.first.visible = true;
+					projects.second.visible = true;
+					projects.third.visible = false;
 				}
 				//display that which we intersected with
 
