@@ -36,9 +36,8 @@
 		var repository = document.getElementById("repository");
 		var hud = document.getElementById("hud");
 		var cursors = document.getElementsByClassName('cursor');
-		for(var i = 0; i < cursors.length; i++) { cursors[i].style.width = window.innerWidth/32 + "px";
-			cursors[i].style.height = window.innerWidth/32 + "px";
-		}
+
+		var bellBox, cloudBox, makerBox;
 
 		var raycaster = new THREE.Raycaster();
 		var mouse = new THREE.Vector2();
@@ -88,37 +87,100 @@
 			//https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation
 			window.addEventListener('deviceorientation', setOrientationControls, true);
 
-			//Creating bounding sky box
+			//Creating bounding sky boxes
 			var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
-			var materialArray = [];
-				materialArray.push( new THREE.MeshBasicMaterial({ 
+			var skyMat = {};
+
+			//main is the cloud sky box
+			skyMat.main = [];
+				skyMat.main.push( new THREE.MeshBasicMaterial({ 
 					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-x.jpg"),
 					//render on inner side of cube
 					side: THREE.BackSide
 				}));
-				materialArray.push( new THREE.MeshBasicMaterial({ 
+				skyMat.main.push( new THREE.MeshBasicMaterial({ 
 					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/pos-x.jpg"),
 					side: THREE.BackSide
 				}));
-				materialArray.push( new THREE.MeshBasicMaterial({ 
+				skyMat.main.push( new THREE.MeshBasicMaterial({ 
 					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/pos-y.jpg"),
 					side: THREE.BackSide
 				}));
-				materialArray.push( new THREE.MeshBasicMaterial({ 
+				skyMat.main.push( new THREE.MeshBasicMaterial({ 
 					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-y.jpg"),
 					side: THREE.BackSide
 				}));
-				materialArray.push( new THREE.MeshBasicMaterial({ 
+				skyMat.main.push( new THREE.MeshBasicMaterial({ 
 					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-z.jpg"),
 					side: THREE.BackSide
 				}));
-				materialArray.push( new THREE.MeshBasicMaterial({ 
+				skyMat.main.push( new THREE.MeshBasicMaterial({ 
 					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/pos-z.jpg"),
 					side: THREE.BackSide
 				}));
-			var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
-			var skyBox = new THREE.Mesh(skyGeo, skyMaterial);
-			scene.add(skyBox);
+			var cloudMaterial = new THREE.MeshFaceMaterial(skyMat.main);
+			cloudBox = new THREE.Mesh(skyGeo, cloudMaterial);
+			scene.add(cloudBox);
+
+			skyMat.bell = [];
+				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-x.png"),
+					side: THREE.BackSide
+				}));
+				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-x.png"),
+					side: THREE.BackSide
+				}));
+				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-y.png"),
+					side: THREE.BackSide
+				}));
+				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-y.png"),
+					side: THREE.BackSide
+				}));
+				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-z.png"),
+					side: THREE.BackSide
+				}));
+				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-z.png"),
+					side: THREE.BackSide
+				}));
+			var bellMaterial = new THREE.MeshFaceMaterial(skyMat.bell);
+			bellBox = new THREE.Mesh(skyGeo, bellMaterial);
+			scene.add(bellBox);
+			bellBox.visible = false;
+
+			skyMat.maker = [];
+				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-x.png"),
+					side: THREE.BackSide
+				}));
+				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.png"),
+					side: THREE.BackSide
+				}));
+				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-y.png"),
+					side: THREE.BackSide
+				}));
+				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-y.png"),
+					side: THREE.BackSide
+				}));
+				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-z.png"),
+					side: THREE.BackSide
+				}));
+				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-z.png"),
+					side: THREE.BackSide
+				}));
+			var makerMaterial = new THREE.MeshFaceMaterial(skyMat.maker);
+			makerBox = new THREE.Mesh(skyGeo, makerMaterial);
+			scene.add(makerBox);
+			makerBox.visible = false;
 
 			//Setting up the lighting for Lambert and Phong Materials
 			var ambientLight = new THREE.AmbientLight(0xdddddd);
@@ -162,6 +224,7 @@
 			projects.first.rotation.y = -Math.PI/2;
 			scene.add(projects.first);
 			projectGroup.push(projects.first);
+			projects.first.name = "maker";
 
 			projects.bellTexture = THREE.ImageUtils.loadTexture("./img/BellWorks/neg-x.png");
 			projects.bellTexture.minFilter = THREE.LinearFilter;
@@ -170,6 +233,7 @@
 			projects.second.rotation.y = Math.PI;
 			scene.add(projects.second);
 			projectGroup.push(projects.second);
+			projects.second.name = "bell";
 
 			projects.mainTexture = THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-x.jpg");
 			projects.mainTexture.minFilter = THREE.LinearFilter;
@@ -178,6 +242,7 @@
 			projects.third.rotation.y = Math.PI/2;
 			scene.add(projects.third);
 			projectGroup.push(projects.third);
+			projects.third.name = "main";
 
 			window.addEventListener('resize', resize, false);
 			setTimeout(resize, 1);
@@ -236,8 +301,37 @@
 					projectGroup[i].scale.y = 1;
 				}
 				for(var i = 0; i < cursors.length; i++) {
-					cursors[i].style.width = window.innerWidth/32 + "px";
-					cursors[i].style.height = window.innerWidth/32 + "px";
+					cursors[i].style.width = window.innerWidth/20 + "px";
+					cursors[i].style.height = window.innerWidth/20 + "px";
+				}
+			}
+			
+			if(cursors[0].style.width === "0px") {
+				//determine with what we intersected
+				if(intersects[0].object.name === "maker") {
+					makerBox.visible = true;
+					//make others invisible
+					cloudBox.visible = false;
+					bellBox.visible = false;
+				}
+				else if(intersects[0].object.name === "bell") {
+					bellBox.visible = true;
+					//make others invisible
+					cloudBox.visible = false;
+					makerBox.visible = false;
+				}
+				else if(intersects[0].object.name === "main") {
+					cloudBox.visible = true;
+					//make others invisible
+					makerBox.visible = false;
+					bellBox.visible = false;
+				}
+				//display that which we intersected with
+
+				//reset cursors size
+				for(var i = 0; i < cursors.length; i++) {
+					cursors[i].style.width = window.innerWidth/20 + "px";
+					cursors[i].style.height = window.innerWidth/20 + "px";
 				}
 			}
 
