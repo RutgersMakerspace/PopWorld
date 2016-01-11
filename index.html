@@ -194,7 +194,7 @@
 			var loader =  new THREE.JSONLoader();
 			loader.load("./3D/Rutgers.json", function(geometry, materials) {
 				var material = new THREE.MeshLambertMaterial({color: 0xcf0a2c});
-				var rutgers = new THREE.Mesh(geometry, material);
+				rutgers = new THREE.Mesh(geometry, material);
 				rutgers.position.y = 5;
 				rutgers.position.z = -20;
 				rutgers.rotation.x = Math.PI/2;
@@ -205,7 +205,7 @@
 
 			loader.load("./3D/250.json", function(geometry, materials) {
 				var material = new THREE.MeshLambertMaterial({color: 0x989999});
-				var two50 = new THREE.Mesh(geometry, material);
+				two50 = new THREE.Mesh(geometry, material);
 				two50.position.y = 5;
 				two50.position.z = -20;
 				two50.rotation.x = Math.PI/2;
@@ -230,21 +230,19 @@
 			projects.bellTexture = THREE.ImageUtils.loadTexture("./img/BellWorks/neg-x.png");
 			projects.bellTexture.minFilter = THREE.LinearFilter;
 			projects.second = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.bellTexture}));
-			projects.second.position.set(0,2,20);
-			projects.second.rotation.y = Math.PI;
+			projects.second.position.set(-20,2,0);
+			projects.second.rotation.y = Math.PI/2;
 			scene.add(projects.second);
 			projectGroup.push(projects.second);
 			projects.second.name = "bell";
 
-			projects.mainTexture = THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-x.jpg");
-			projects.mainTexture.minFilter = THREE.LinearFilter;
-			projects.third = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.mainTexture}));
-			projects.third.position.set(-20,2,0);
-			projects.third.rotation.y = Math.PI/2;
-			scene.add(projects.third);
-			projectGroup.push(projects.third);
-			projects.third.name = "main";
-			projects.third.visible = false;
+			projects.fourth = new THREE.Mesh(new THREE.PlaneGeometry(15,15), new THREE.MeshBasicMaterial({color: 0xaaaaff}));
+			projects.fourth.position.set(0,-20,0);
+			projects.fourth.rotation.x = -Math.PI/2;
+			scene.add(projects.fourth);
+			projectGroup.push(projects.fourth);
+			projects.fourth.name = "floor";
+			projects.fourth.visible = false;
 
 			window.addEventListener('resize', resize, false);
 			setTimeout(resize, 1);
@@ -289,8 +287,8 @@
 			var intersects = raycaster.intersectObjects(projectGroup);
 			
 			if(intersects.length > 0) {
-				//if intersecting a visible object
-				if(intersects[0].object.visible === true) {
+				//if intersecting a visible object or (the floor and not in main scene)
+				if(intersects[0].object.visible === true || (intersects[0].object.name === "floor" && cloudBox.visible === false) ) {
 					//shrink cursor
 					for(var i = 0; i < cursors.length; i++) {
 						var cursorWidth = cursors[i].offsetWidth;
@@ -328,29 +326,40 @@
 
 					//toggle the links
 					projects.first.visible = false;
-					projects.second.visible = true;
-					projects.third.visible = true;
+					projects.second.visible = false;
+					//projects.third.visible = false;
+
+					rutgers.visible = false;
+					two50.visible = false;
 				}
 				else if(intersects[0].object.name === "bell") {
 					bellBox.visible = true;
 					//make others invisible
 					cloudBox.visible = false;
 					makerBox.visible = false;
-					
-					projects.first.visible = true;
+				
+					//make links invisible
+					projects.first.visible = false;
 					projects.second.visible = false;
-					projects.third.visible = true;
+					//projects.third.visible = false;
+					
+					rutgers.visible = false;
+					two50.visible = false;
 				}
-				else if(intersects[0].object.name === "main") {
+				else if(intersects[0].object.name === "floor") {
 					cloudBox.visible = true;
 					//make others invisible
 					makerBox.visible = false;
 					bellBox.visible = false;
 					
-					
+					//make links visible	
 					projects.first.visible = true;
 					projects.second.visible = true;
-					projects.third.visible = false;
+					//projects.third.visible = false;
+
+					//make rutgers logo visible
+					rutgers.visible = true;
+					two50.visible = true;
 				}
 				//display that which we intersected with
 
