@@ -38,7 +38,7 @@
 		var cursors = document.getElementsByClassName('cursor');
 
 		var projects;
-		var bellBox, cloudBox, makerBox, oaxBox;
+		var bellBox, cloudBox, makerBox, confBox;
 
 		var raycaster = new THREE.Raycaster();
 		var mouse = new THREE.Vector2();
@@ -183,35 +183,35 @@
 			scene.add(makerBox);
 			makerBox.visible = false;
 
-			skyMat.oax = [];
-				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/neg-x.jpg"),
+			skyMat.conf = [];
+				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Conference/neg-x.jpg"),
 					side: THREE.BackSide
 				}));
-				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/pos-x.jpg"),
+				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Conference/pos-x.jpg"),
 					side: THREE.BackSide
 				}));
-				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/pos-y.jpg"),
+				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Conference/pos-y.jpg"),
 					side: THREE.BackSide
 				}));
-				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/neg-y.jpg"),
+				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Conference/neg-y.jpg"),
 					side: THREE.BackSide
 				}));
-				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/neg-z.jpg"),
+				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Conference/neg-z.jpg"),
 					side: THREE.BackSide
 				}));
-				skyMat.oax.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Oaxaca/pos-z.jpg"),
+				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/Conference/pos-z.jpg"),
 					side: THREE.BackSide
 				}));
-			var oaxMaterial = new THREE.MeshFaceMaterial(skyMat.oax);
-			oaxBox = new THREE.Mesh(skyGeo, oaxMaterial);
-			scene.add(oaxBox);
-			oaxBox.visible = false;
+			var confMaterial = new THREE.MeshFaceMaterial(skyMat.conf);
+			confBox = new THREE.Mesh(skyGeo, confMaterial);
+			scene.add(confBox);
+			confBox.visible = false;
 
 			//Setting up the lighting for Lambert and Phong Materials
 			var ambientLight = new THREE.AmbientLight(0xdddddd);
@@ -266,14 +266,14 @@
 			projectGroup.push(projects.second);
 			projects.second.name = "bell";
 			
-			projects.oaxTexture = THREE.ImageUtils.loadTexture("./img/Oaxaca/pos-x.jpg");
-			projects.oaxTexture.minFilter = THREE.LinearFilter;
-			projects.third = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.oaxTexture}));
+			projects.confTexture = THREE.ImageUtils.loadTexture("./img/Conference/pos-x.jpg");
+			projects.confTexture.minFilter = THREE.LinearFilter;
+			projects.third = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.confTexture}));
 			projects.third.position.set(0,2,20);
 			projects.third.rotation.y = Math.PI;
 			scene.add(projects.third);
 			projectGroup.push(projects.third);
-			projects.third.name = "oaxaca";
+			projects.third.name = "conference";
 
 			projects.fourth = new THREE.Mesh(new THREE.PlaneGeometry(23,23), new THREE.MeshBasicMaterial({color: 0xaaaaff}));
 			projects.fourth.position.set(0,-20,0);
@@ -362,7 +362,7 @@
 					//make others invisible
 					cloudBox.visible = false;
 					bellBox.visible = false;
-					oaxBox.visible = false;
+					confBox.visible = false;
 
 					//toggle the links
 					projects.first.visible = false;
@@ -377,7 +377,7 @@
 					//make others invisible
 					cloudBox.visible = false;
 					makerBox.visible = false;
-					oaxBox.visible = false;
+					confBox.visible = false;
 				
 					//make links invisible
 					projects.first.visible = false;
@@ -387,8 +387,8 @@
 					rutgers.visible = false;
 					two50.visible = false;
 				}
-				else if(intersects[0].object.name === "oaxaca") {
-					oaxBox.visible = true;
+				else if(intersects[0].object.name === "conference") {
+					confBox.visible = true;
 					//make others invisible
 					cloudBox.visible = false;
 					makerBox.visible = false;
@@ -408,7 +408,7 @@
 					//make others invisible
 					makerBox.visible = false;
 					bellBox.visible = false;
-					oaxBox.visible = false;
+					confBox.visible = false;
 					
 					//make links visible	
 					projects.first.visible = true;
