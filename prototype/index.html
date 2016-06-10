@@ -37,6 +37,7 @@
 		var hud = document.getElementById("hud");
 		var cursors = document.getElementsByClassName('cursor');
 
+		var skyMat = {};
 		var projects;
 		var bellBox, cloudBox, makerBox, confBox;
 
@@ -44,6 +45,36 @@
 		var mouse = new THREE.Vector2();
 		mouse.x = 0;
 		mouse.y = 0;
+
+		//function to generate a populated sky box texture array
+		//requires array to populate, and name of directory
+		var genSkyBox = function(textArray, folder) {
+				textArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/" + folder + "/neg-x.jpg"),
+					//render on inner side of cube
+					side: THREE.BackSide
+				}));
+				textArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/" + folder + "/pos-x.jpg"),
+					side: THREE.BackSide
+				}));
+				textArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/" + folder + "/pos-y.jpg"),
+					side: THREE.BackSide
+				}));
+				textArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/" + folder + "/neg-y.jpg"),
+					side: THREE.BackSide
+				}));
+				textArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/" + folder + "/neg-z.jpg"),
+					side: THREE.BackSide
+				}));
+				textArray.push( new THREE.MeshBasicMaterial({ 
+					map: THREE.ImageUtils.loadTexture("./img/" + folder + "/pos-z.jpg"),
+					side: THREE.BackSide
+				}));
+		}
 
 		var create = function() {
 			clock = new THREE.Clock();
@@ -59,7 +90,6 @@
 			container.appendChild(renderer.domElement);
 
 			effect = new THREE.StereoEffect(renderer);
-			//effect.eyeSeparation = 10;
 			effect.setSize(window.innerWidth, window.innerHeight);
 
 			controls =  new THREE.OrbitControls(camera, render.domElement);
@@ -82,7 +112,6 @@
 				controls.update();
 
 				repository.addEventListener('click', fullscreen, false);
-				//container.firstChild.addEventListener('click', fullscreen, false);
 				window.removeEventListener('deviceorientation', setOrientationControls, true);
 			}
 			//https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation
@@ -90,128 +119,48 @@
 
 			//Creating bounding sky boxes
 			var skyGeo = new THREE.BoxGeometry(5000,5000,5000);
-			var skyMat = {};
 
 			//main is the cloud sky box
 			skyMat.main = [];
-				skyMat.main.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-x.jpg"),
-					//render on inner side of cube
-					side: THREE.BackSide
-				}));
-				skyMat.main.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/pos-x.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.main.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/pos-y.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.main.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-y.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.main.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/neg-z.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.main.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MainSkyBox/pos-z.jpg"),
-					side: THREE.BackSide
-				}));
+			genSkyBox(skyMat.main, "MainSkyBox");
 			var cloudMaterial = new THREE.MeshFaceMaterial(skyMat.main);
 			cloudBox = new THREE.Mesh(skyGeo, cloudMaterial);
 			scene.add(cloudBox);
 
 			skyMat.bell = [];
-				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-x.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-x.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-y.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-y.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/neg-z.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.bell.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/BellWorks/pos-z.jpg"),
-					side: THREE.BackSide
-				}));
+			genSkyBox(skyMat.bell, "BellWorks");
 			var bellMaterial = new THREE.MeshFaceMaterial(skyMat.bell);
 			bellBox = new THREE.Mesh(skyGeo, bellMaterial);
 			scene.add(bellBox);
 			bellBox.visible = false;
 
 			skyMat.maker = [];
-				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-x.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-y.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-y.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/neg-z.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.maker.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-z.jpg"),
-					side: THREE.BackSide
-				}));
+			genSkyBox(skyMat.maker, "MakerShopSkyBox");
 			var makerMaterial = new THREE.MeshFaceMaterial(skyMat.maker);
 			makerBox = new THREE.Mesh(skyGeo, makerMaterial);
 			scene.add(makerBox);
 			makerBox.visible = false;
 
 			skyMat.conf = [];
-				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Conference/neg-x.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Conference/pos-x.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Conference/pos-y.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Conference/neg-y.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Conference/neg-z.jpg"),
-					side: THREE.BackSide
-				}));
-				skyMat.conf.push( new THREE.MeshBasicMaterial({ 
-					map: THREE.ImageUtils.loadTexture("./img/Conference/pos-z.jpg"),
-					side: THREE.BackSide
-				}));
+			genSkyBox(skyMat.conf, "Conference");
 			var confMaterial = new THREE.MeshFaceMaterial(skyMat.conf);
 			confBox = new THREE.Mesh(skyGeo, confMaterial);
 			scene.add(confBox);
 			confBox.visible = false;
+
+			skyMat.queens = [];
+			genSkyBox(skyMat.queens, "Queens");
+			var queensMaterial = new THREE.MeshFaceMaterial(skyMat.queens);
+			queensBox = new THREE.Mesh(skyGeo, queensMaterial);
+			scene.add(queensBox);
+			queensBox.visible = false;
+
+			skyMat.scott = [];
+			genSkyBox(skyMat.scott, "ScottHall");
+			var scottMaterial = new THREE.MeshFaceMaterial(skyMat.scott);
+			scottBox = new THREE.Mesh(skyGeo, scottMaterial);
+			scene.add(scottBox);
+			scottBox.visible = false;
 
 			//Setting up the lighting for Lambert and Phong Materials
 			var ambientLight = new THREE.AmbientLight(0xdddddd);
@@ -248,9 +197,7 @@
 			projects = {};
 			
 			projects.makerTexture = THREE.ImageUtils.loadTexture("./img/MakerShopSkyBox/pos-x.jpg");
-			projects.makerTexture.minFilter = THREE.LinearFilter;
 			projects.first = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.makerTexture}));
-			//projects.first.position.set(0,2,-10);
 			projects.first.position.set(20, 2,-1);
 			projects.first.rotation.y = -Math.PI/2;
 			scene.add(projects.first);
@@ -258,16 +205,14 @@
 			projects.first.name = "maker";
 
 			projects.bellTexture = THREE.ImageUtils.loadTexture("./img/BellWorks/neg-x.jpg");
-			projects.bellTexture.minFilter = THREE.LinearFilter;
 			projects.second = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.bellTexture}));
-			projects.second.position.set(-20,2,0);
+			projects.second.position.set(-20,2,-1);
 			projects.second.rotation.y = Math.PI/2;
 			scene.add(projects.second);
 			projectGroup.push(projects.second);
 			projects.second.name = "bell";
 			
 			projects.confTexture = THREE.ImageUtils.loadTexture("./img/Conference/pos-x.jpg");
-			projects.confTexture.minFilter = THREE.LinearFilter;
 			projects.third = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.confTexture}));
 			projects.third.position.set(0,2,20);
 			projects.third.rotation.y = Math.PI;
@@ -282,6 +227,22 @@
 			projectGroup.push(projects.fourth);
 			projects.fourth.name = "floor";
 			projects.fourth.visible = false;
+
+			projects.confTexture = THREE.ImageUtils.loadTexture("./img/Queens/pos-x.jpg");
+			projects.fifth = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.confTexture}));
+			projects.fifth.position.set(14.14,2,14.14);
+			projects.fifth.rotation.y = Math.PI + Math.PI/4;
+			scene.add(projects.fifth);
+			projectGroup.push(projects.fifth);
+			projects.fifth.name = "queens";
+
+			projects.confTexture = THREE.ImageUtils.loadTexture("./img/ScottHall/pos-x.jpg");
+			projects.sixth = new THREE.Mesh(new THREE.PlaneGeometry(8,8), new THREE.MeshBasicMaterial({map: projects.confTexture}));
+			projects.sixth.position.set(-14.14,2,14.14);
+			projects.sixth.rotation.y = Math.PI - Math.PI/4;
+			scene.add(projects.sixth);
+			projectGroup.push(projects.sixth);
+			projects.sixth.name = "scotthall";
 
 			window.addEventListener('resize', resize, false);
 			setTimeout(resize, 1);
@@ -363,11 +324,15 @@
 					cloudBox.visible = false;
 					bellBox.visible = false;
 					confBox.visible = false;
+					queensBox.visible = false;
+					scottBox.visible = false;
 
 					//toggle the links
 					projects.first.visible = false;
 					projects.second.visible = false;
 					projects.third.visible = false;
+					projects.fifth.visible = false;
+					projects.sixth.visible = false;
 
 					rutgers.visible = false;
 					two50.visible = false;
@@ -378,11 +343,15 @@
 					cloudBox.visible = false;
 					makerBox.visible = false;
 					confBox.visible = false;
+					queensBox.visible = false;
+					scottBox.visible = false;
 				
 					//make links invisible
 					projects.first.visible = false;
 					projects.second.visible = false;
 					projects.third.visible = false;
+					projects.fifth.visible = false;
+					projects.sixth.visible = false;
 					
 					rutgers.visible = false;
 					two50.visible = false;
@@ -393,15 +362,56 @@
 					cloudBox.visible = false;
 					makerBox.visible = false;
 					bellBox.visible = false;
+					queensBox.visible = false;
+					scottBox.visible = false;
 				
 					//make links invisible
 					projects.first.visible = false;
 					projects.second.visible = false;
 					projects.third.visible = false;
+					projects.fifth.visible = false;
+					projects.sixth.visible = false;
 					
 					rutgers.visible = false;
 					two50.visible = false;
-
+				}
+				else if(intersects[0].object.name === "queens") {
+					queensBox.visible = true;
+					//make others invisible
+					confBox.visible = false;
+					cloudBox.visible = false;
+					makerBox.visible = false;
+					bellBox.visible = false;
+					scottBox.visible = false;
+				
+					//make links invisible
+					projects.first.visible = false;
+					projects.second.visible = false;
+					projects.third.visible = false;
+					projects.fifth.visible = false;
+					projects.sixth.visible = false;
+					
+					rutgers.visible = false;
+					two50.visible = false;
+				}
+				else if(intersects[0].object.name === "scotthall") {
+					scottBox.visible = true;
+					//make others invisible
+					confBox.visible = true;
+					cloudBox.visible = false;
+					makerBox.visible = false;
+					bellBox.visible = false;
+					queensBox.visible = false;
+				
+					//make links invisible
+					projects.first.visible = false;
+					projects.second.visible = false;
+					projects.third.visible = false;
+					projects.fifth.visible = false;
+					projects.sixth.visible = false;
+					
+					rutgers.visible = false;
+					two50.visible = false;
 				}
 				else if(intersects[0].object.name === "floor") {
 					cloudBox.visible = true;
@@ -409,11 +419,15 @@
 					makerBox.visible = false;
 					bellBox.visible = false;
 					confBox.visible = false;
+					queensBox.visible = false;
+					scottBox.visible = false;
 					
 					//make links visible	
 					projects.first.visible = true;
 					projects.second.visible = true;
 					projects.third.visible = true;
+					projects.fifth.visible = true;
+					projects.sixth.visible = true;
 
 					//make rutgers logo visible
 					rutgers.visible = true;

@@ -1,2 +1,3 @@
-# GoogleCardboardV2
-Rutgers COHLIT cardboard version
+## PopWorld
+
+A web application allowing you to create immersive photosphere presentations.

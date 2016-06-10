@@ -1,0 +1,31 @@
+{
+  "name": "PopWorld",
+  "version": "1.0.0",
+  "description": "A web application allowing you to create immersive photosphere presentations.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RutgersMakerspace/PopWorld.git"
+  },
+  "keywords": [
+    "photosphere",
+    "vr",
+    "virtual",
+    "reality",
+    "google",
+    "cardboard"
+  ],
+  "author": "Gibran Garcia <satimidus@gmail.com> (http://owlsketch.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RutgersMakerspace/PopWorld/issues"
+  },
+  "homepage": "https://github.com/RutgersMakerspace/PopWorld",
+  "dependencies": {
+    "express": "^4.13.4",
+    "mongoose": "^4.4.20"
+  }
+}
