@@ -1,0 +1,47 @@
+/* all.css is styling that will be applied to all the pages
+*  regardless of mobile or desktop presentation.
+*/
+
+html {
+	font-size: 14px;
+}
+
+h1, h2, h3, h4 {
+	font-family: 'Open Sans', arial;
+	font-weight: 700;
+}
+
+html, body, h1, h2, h3, h4, p {
+	color: #20232c;
+}
+
+a:link {
+	color: #2ecc71;
+}
+
+a:visited {
+	color: #1cb35b;
+}
+
+a:hover {
+	background-color: #2ecc71;
+	color: #fff;
+}
+
+a:active {
+	background-color: #2cc36b;
+	color: #fff;
+}
+
+p {
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+	font-family: 'Cutive Mono', serif;
+	font-weight: 400;
+	font-size: 13px;
+	color: #363946;
+}
+
+ul li{
+	display: inline;	
+}

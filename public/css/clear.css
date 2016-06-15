@@ -1,0 +1,12 @@
+/* clear.css resets all undesired css default properties */
+html, body, h1, h2, h3, h4, a {
+	margin: 0em;
+	padding: 0em;
+	text-decoration: none;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0em;
+	padding: 0em;
+}
