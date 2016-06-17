@@ -13,7 +13,17 @@
 	<% } %>
 
 	<div class="container">
+		<form action="/login" method="post">
+			<h2>Login</h2>
+			
+			<label for="username">Username</label>
+			<input type="text" id="username" name="username" placeholder="Username" required autofocus>
 		
+			<label for="password">Password</label>
+			<input type="password" name="password" id="password" placeholder="Password">
+
+			<button type="submit">Login</button>
+		</form>
 	</div>
 
 </body>

@@ -2,6 +2,7 @@ var config = require('./config');
 var express = require('express');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var flash = require('connect-flash');
 
 module.exports = function() {
 	//create an express app
@@ -19,10 +20,16 @@ module.exports = function() {
 	app.set('views','./app/views');
 	//using ejs templating
 	app.set('view engine', 'ejs');
+
+	//store temporary messages that are cleared once presented to the
+	//user through req.flash(), which allows you to create and retrive
+	//flash messages
+	app.use(flash());
 	
 	//passport login authentication
 	app.use(passport.initialize());
 	app.use(passport.session());
+
 
 	//routes library
 	require('../app/routes/index.server.routes.js')(app);

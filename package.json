@@ -26,6 +26,7 @@
   "homepage": "https://github.com/RutgersMakerspace/PopWorld",
   "dependencies": {
     "body-parser": "^1.15.1",
+    "connect-flash": "^0.1.1",
     "ejs": "^2.4.2",
     "express": "^4.13.4",
     "mongoose": "^4.4.20",
