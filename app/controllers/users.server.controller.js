@@ -1,6 +1,17 @@
 var User = require('mongoose').model('User');
 var passport = require('passport');
 
+exports.list = function(req, res, next) {
+	User.find({}, function(err, users) {
+		if (err) {
+			return next(err);
+		}
+		else {
+			res.json(users);
+		}
+	});
+};
+
 var getErrorMessage = function(err) {
 	var message = '';
 	if(err.code) {

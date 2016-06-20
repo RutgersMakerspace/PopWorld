@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var flash = require('connect-flash');
+var session = require('express-session');
 
 module.exports = function() {
 	//create an express app
@@ -20,6 +21,12 @@ module.exports = function() {
 	app.set('views','./app/views');
 	//using ejs templating
 	app.set('view engine', 'ejs');
+
+	app.use(session({
+		saveUninitialized: true,
+		resave: true,
+		secret: 'CookieSecretSuperIs'
+	}));
 
 	//store temporary messages that are cleared once presented to the
 	//user through req.flash(), which allows you to create and retrive

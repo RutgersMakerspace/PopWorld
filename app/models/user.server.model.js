@@ -17,6 +17,7 @@ var UserSchema = new Schema({
 });
 
 //pre save middleware to handle users password hashing
+//>>before saving this user, hash their password
 UserSchema.pre('save', function(next) {
 		if(this.password) {
 			//create an MD5 hash of the password
