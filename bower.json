@@ -1,0 +1,30 @@
+
+  "name": "PopWorld",
+  "description": "A web application allowing you to create immersive photosphere presentations.",
+  "main": "server.js",
+  "authors": [
+    "Gibran Garcia <satimidus@gmail.com> (http://owlsketch.com)",
+    "Brian Searls <briansrls@gmail.com> (http://google.com)",
+  ],
+  "license": "ISC",
+  "keywords": [
+    "photosphere",
+    "vr",
+    "virtual",
+    "reality",
+    "google",
+    "cardboard"
+  ],
+  "homepage": "https://github.com/RutgersMakerspace/PopWorld",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
