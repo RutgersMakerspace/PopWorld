@@ -1,10 +1,10 @@
-
+{
   "name": "PopWorld",
   "description": "A web application allowing you to create immersive photosphere presentations.",
   "main": "server.js",
   "authors": [
     "Gibran Garcia <satimidus@gmail.com> (http://owlsketch.com)",
-    "Brian Searls <briansrls@gmail.com> (http://google.com)",
+    "Brian Searls <briansrls@gmail.com> (http://google.com)"
   ],
   "license": "ISC",
   "keywords": [
