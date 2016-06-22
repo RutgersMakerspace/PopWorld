@@ -1,0 +1,22 @@
+.navbar{ 
+	margin-bottom: 0;
+}
+
+.navbar a{
+	color: white;
+}
+
+.navbar-custom{
+	background-color: #231F20;
+	border-color: #231F20;
+	font-size: 1.125em;	
+}
+.navbar-custom .navbar-nav > li > a:hover,
+.navbar-custom .navbar-nav > li > a:focus {
+	  background-color: #231F20;
+	    color: gray;
+	    
+}
+.custom-btn{
+	@include button-variant(black, black, white);
+}
