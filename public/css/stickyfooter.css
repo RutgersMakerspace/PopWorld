@@ -1,3 +1,9 @@
+.center{
+	margin: 20px auto auto auto;
+	width: 50%;
+	text-align: center;
+}
+
 html,
 body {
 	height: 100%;
@@ -11,6 +17,7 @@ body {
 	height: 100%;
 	/* Negative indent footer by it's height */
 	margin: 20px auto -60px;
+	
     }
 
     /* Set the fixed height of the footer here */

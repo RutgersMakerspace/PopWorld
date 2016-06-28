@@ -18,5 +18,9 @@
 	    
 }
 .custom-btn{
-	@include button-variant(black, black, white);
+
+	/* @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border); */
+	background-color: white;
+	border-color: black;
 }
+
