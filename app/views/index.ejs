@@ -8,82 +8,42 @@
 
 	<!-- bootstrap css in next three links -->
 	<link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel = "stylesheet"/>
-	<link href="./bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel = "stylesheet"/>
 	<link href="./bower_components/bootstrap/dist/css/ie10-viewport-bug-workaround.css" rel = "stylesheet"/>
-	<!-- custom css -->
-	<link href="./css/navbar.css" rel = "stylesheet"/>
-	<link href="./css/stickyfooter.css" rel = "stylesheet" />
+
 </head>
-
 <body>
+	<nav class="navbar navbar-default">  
+		<div class="container-fluid">     
+			<!-- Brand and toggle get grouped for better mobile display -->     
+			<div class="navbar-header">       
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					 <span class="sr-only">Toggle navigation</span>
+					 <span class="icon-bar"></span>
+					 <span class="icon-bar"></span>         
+					 <span class="icon-bar"></span>       
+				</button>       
+				<a class="navbar-brand" href="#">PopWorld</a>
+		    </div>
 
-	<!-- NAVBAR ========================== -->
+			<!-- Collect the nav links, forms, and other content for toggling -->     
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="#">About </a></li>
+					<li><a href="#">Explore </a></li>
+					<form class="navbar-form navbar-left" role="search">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Search PopWorld">
+						</div>
+						<button type="submit" class="btn btn-default">Submit</button>
+			        </form>
+				</ul>
 
-	<nav class="navbar navbar-custom navbar-static-top">
-	<div class="container-fluid font-custom">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="#">
-				<img alt = "Brand" src="./img/logo.png" height="27px">
-			</a>
-		</div>
-		<ul class="nav navbar-nav">
-			<li><a href="#">ABOUT</a></li>
-			<li><a href="#">GALLERY</a></li>
-		</ul>
-		<ul class="nav navbar-nav navbar-right">
-			<li class="active"><a href="/login">LOG IN</a></li>
-			<li class="active"><a href="/register">SIGN UP</a></li>	
-		</ul>
-	</div>
-	</nav>
-    <!-- !NAVBAR ====================-->
-
-    <!-- Carousel ================================================== -->
-
-	<div id = "myCarousel" class = "carousel">
-
-		<ol class = "carousel-indicators">
-			<li data-target = "#myCarousel" data-slide-to = "0" class = "active"></li>
-			<li data-target = "#myCarousel" data-slide-to = "1"></li>
-			<li data-target = "#myCarousel" data-slide-to = "2"></li>
-
-		</ol>
-		<div class = "carousel-inner">
-			<div class = "item active">
-			<img src = "./img/banner.png" alt ="Banner" class = "img-responsive">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">Login</a></li>
+					<li class="active"><a href="#">Register <span class="sr-only">(current)</span></a></li>
+				</ul>
 			</div>
 		</div>
-	</div>
-	<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src = "./bower_components/bootstrap/dist/js/bootstrap.js"></script>
-
-	<!-- !CAROUSEL ================================================== -->
-
-	<!-- Begin page content -->
-	<div class = "text-center">
-		<button type="button" class="center custom-btn btn btn-lg ">EXPLORE PUBLIC POP-WORLDS</button>
-	</div>
-	
-
-	<div id="wrap">
-	
-	<!-- Footer ========================================== -->
-
-	      <div class="container">
-		      <div class="page-header">
-			      <h1>Memes</h1>
-		      </div>
-		      <p class="lead">HTML and CSS.</p>
-	      </div>
-	      <div id="push"></div>
-      
-      	</div>
-
-	      <div id="footer">
-		      <div class="container">
-			      <p class="muted credit" font-color=white>Example</a>.</p>
-		      </div>
-	      </div>
-	<!-- !FOOTER ========================================== -->
+	</nav>
 </body>
 </html>

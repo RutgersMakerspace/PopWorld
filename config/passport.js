@@ -5,7 +5,7 @@ module.exports = function() {
 	var User = mongoose.model('User');
 
 	//passport will save a user's _id property to the
-	//session when a user is authenticated
+	//session when a user is authenticated as a cookie
 	passport.serializeUser(function(user, done) {
 		done(null, user.id);
 	});
@@ -21,5 +21,7 @@ module.exports = function() {
 			}
 	)});
 
+	//before passport can authenticate any user, a strategy must
+	//be required
 	require('./strategies/local.js')();
 };

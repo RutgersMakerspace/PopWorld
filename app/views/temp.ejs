@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Pop World - Rutgers University</title>
+
+	<!-- bootstrap css in next three links -->
+	<link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel = "stylesheet"/>
+	<link href="./bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel = "stylesheet"/>
+	<link href="./bower_components/bootstrap/dist/css/ie10-viewport-bug-workaround.css" rel = "stylesheet"/>
+	<!-- custom css -->
+	<link href="./css/navbar.css" rel = "stylesheet"/>
+	<link href="./css/stickyfooter.css" rel = "stylesheet" />
+</head>
+
+<body>
+
+	<!-- NAVBAR ========================== -->
+
+	<nav class="navbar navbar-custom navbar-static-top">
+	<div class="container-fluid font-custom">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">
+				<img alt = "Brand" src="./img/logo.png" height="27px">
+			</a>
+		</div>
+		<ul class="nav navbar-nav">
+			<li><a href="#">ABOUT</a></li>
+			<li><a href="#">GALLERY</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li class="active"><a href="/login">LOG IN</a></li>
+			<li class="active"><a href="/register">SIGN UP</a></li>	
+		</ul>
+	</div>
+	</nav>
+    <!-- !NAVBAR ====================-->
+
+    <!-- Carousel ================================================== -->
+
+	<div id = "myCarousel" class = "carousel">
+
+		<ol class = "carousel-indicators">
+			<li data-target = "#myCarousel" data-slide-to = "0" class = "active"></li>
+			<li data-target = "#myCarousel" data-slide-to = "1"></li>
+			<li data-target = "#myCarousel" data-slide-to = "2"></li>
+
+		</ol>
+		<div class = "carousel-inner">
+			<div class = "item active">
+			<img src = "./img/banner.png" alt ="Banner" class = "img-responsive">
+			</div>
+		</div>
+	</div>
+	<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src = "./bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+	<!-- !CAROUSEL ================================================== -->
+
+	<!-- Begin page content -->
+	<div class = "text-center">
+		<button type="button" class="center custom-btn btn btn-lg ">EXPLORE PUBLIC POP-WORLDS</button>
+	</div>
+	
+
+	<div id="wrap">
+	
+	<!-- Footer ========================================== -->
+
+	      <div class="container">
+		      <div class="page-header">
+			      <h1>Memes</h1>
+		      </div>
+		      <p class="lead">HTML and CSS.</p>
+	      </div>
+	      <div id="push"></div>
+      
+      	</div>
+
+	      <div id="footer">
+		      <div class="container">
+			      <p class="muted credit" font-color=white>Example</a>.</p>
+		      </div>
+	      </div>
+	<!-- !FOOTER ========================================== -->
+</body>
+</html>

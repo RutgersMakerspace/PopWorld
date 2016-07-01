@@ -8,14 +8,18 @@ module.exports = function() {
 			{username: username},
 			function(err, user) {
 				if(err) {
+					//return a callback with an error
 					return done(err);
 				}
 				if(!user) {
+					//return a callback with no error, and false for 
+					//user authenticated with an optional message
 					return done(null, false, {message: 'Unknown user'});
 				}
 				if(!user.authenticate(password)) {
 					return done(null, false, {message: 'Invalid password'});
 				}
+				//success
 				return done(null, user);
 			}
 		);

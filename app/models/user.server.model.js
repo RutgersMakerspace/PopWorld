@@ -30,6 +30,9 @@ UserSchema.pre('save', function(next) {
 	}
 );
 
+//I dont need the world to see that I've been the best I can be
+//but I dont think I can stand to be where you dont see me.
+
 //accepts string password argument, which it then hashes and
 //compares to the current users hashed password
 UserSchema.methods.authenticate = function(password) {
