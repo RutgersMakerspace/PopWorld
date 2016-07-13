@@ -1,0 +1,8 @@
+nav .container-fluid {
+	max-width: 1800px;
+	margin: auto;
+}
+
+.navbar-brand img{
+	margin-top: -5px;
+}
