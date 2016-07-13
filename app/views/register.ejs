@@ -1,36 +1,84 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+
 <html>
-<head>
-	<title>
-		<%=title %>
-	</title>
-</head>
-<body>
-	<% for(var i in messages) { %>
-		<div class="flash">
-			<%= messages[i] %>
+	<head>
+		<link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel = "stylesheet"/>
+		<link href="./bower_components/bootstrap/dist/css/ie10-viewport-bug-workaround.css" rel = "stylesheet"/>
+		<link href="./css/login.css" rel = "stylesheet"/>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+
+
+
+				<div class="col-md-6 col-md-offset-3">
+
+					<div style="padding: 20px;" id="form-olvidado">
+						<form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+							<div class="form-group">
+								<label class="sr-only" for="username">Username</label>
+								<input type="text" class="form-control" id="username" name = "username" placeholder="Username" required>
+							</div>
+							<div class="form-group">
+								<label class="sr-only" for="password">Password</label>
+								<input type="password" class="form-control" id="password" placeholder="Password" required>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox"> Remember me
+								</label>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-success btn-block">Sign in</button>
+								<p class="help-block">
+								<a class="pull-right text-muted" href="#" id="olvidado"><small>Forgot your password?</small></a>
+								</p>
+							</div>
+
+						</form>
+
+						<div class="login-or">
+							<hr class="hr-or">
+							<span class="span-or">or</span>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-6">
+								<a href="#" class="btn btn-primary btn-block">Facebook</a>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-6">
+								<a href="#" class="btn btn-info btn-block">Google</a>
+							</div>
+						</div>
+
+
+					</div>
+
+
+
+					<div style="display: none; padding: 20px;" id="form-olvidado">
+
+						<form accept-charset="UTF-8" role="form" id="login-recordar" method="post">
+							<fieldset>
+								<span class="help-block">
+									We'll send you an email with instructions to choose a new password.
+								</span>
+								<div class="form-group">
+									<label class="sr-only" for="exampleInputEmail2">Email address</label>
+									<input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
+								</div>
+								<button type="submit" class="btn btn-primary btn-block" id="btn-olvidado">
+									Continue
+								</button>
+								<p class="help-block">
+								<a class="text-muted" href="#" id="acceso"><small>Account Access</small></a>
+								</p>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
-	<% } %>
-
-	<div class="container">
-		<form action="/register" method="post">
-			<h2>Register</h2>
-
-			<label for="username">Username</label>
-			<input type="text" id="username" name="username" placeholder="Username" required autofocus>
-
-			<label for="name">Name</label>
-			<input type="text" id="name" name="name" placeholder="Name" required>
-
-			<label for="email">E-mail</label>
-			<input type="text" id="email" name="email" placeholder="E-mail" required>
-		
-			<label for="password">Password</label>
-			<input type="password" id="password" name="password" placeholder="Password" required>
-
-			<button type="submit">Register</button>	
-		</form>
-	</div>
-
-</body>
+	</body>
 </html>
